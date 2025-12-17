@@ -1,0 +1,16 @@
+.topbar {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: white;
+  border-bottom: 1px solid #eee;
+}
+
+.title {
+  grid-column: 2;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}

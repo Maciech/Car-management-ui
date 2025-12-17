@@ -1,0 +1,21 @@
+<nav class="sidebar" [class.expanded]="expanded()">
+
+  <!-- HAMBURGER -->
+  <button class="hamburger" (click)="toggle()">
+    ☰
+  </button>
+
+  <!-- NAV -->
+  @for (item of navItems; track item.route) {
+    <a
+      [routerLink]="item.route"
+      routerLinkActive="active"
+    >
+      <span class="icon">{{ item.icon }}</span>
+
+      @if (expanded()) {
+        <span class="label">{{ item.label }}</span>
+      }
+    </a>
+  }
+</nav>
