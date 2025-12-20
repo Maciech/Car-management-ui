@@ -1,0 +1,44 @@
+<section class="stats">
+
+  <header>
+    <h2>Statystyki sprzedaży</h2>
+
+    <div class="ranges">
+      <button
+        [class.active]="range() === 'year'"
+        (click)="setRange('year')"
+      >
+        Rok
+      </button>
+
+      <button
+        [class.active]="range() === 'month'"
+        (click)="setRange('month')"
+      >
+        Miesiąc
+      </button>
+    </div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi">
+      <span>Przychód</span>
+      <strong>320 000 zł</strong>
+    </div>
+
+    <div class="kpi">
+      <span>Koszty</span>
+      <strong>220 000 zł</strong>
+    </div>
+
+    <div class="kpi">
+      <span>Zysk</span>
+      <strong class="profit">100 000 zł</strong>
+    </div>
+  </div>
+
+  <div class="chart-placeholder">
+    Wykres ({{ range() }})
+  </div>
+
+</section>

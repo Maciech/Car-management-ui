@@ -1,0 +1,43 @@
+.stats {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ranges button {
+  margin-left: 8px;
+}
+
+.ranges .active {
+  font-weight: bold;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 16px;
+}
+
+.kpi strong {
+  display: block;
+  font-size: 18px;
+}
+
+.profit {
+  color: green;
+}
+
+.chart-placeholder {
+  margin-top: 24px;
+  height: 200px;
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

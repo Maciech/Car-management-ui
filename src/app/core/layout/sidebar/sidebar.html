@@ -10,6 +10,7 @@
     <a
       [routerLink]="item.route"
       routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
     >
       <span class="icon">{{ item.icon }}</span>
 

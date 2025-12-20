@@ -1,3 +1,46 @@
-<h1>Dashboard</h1>
-<p>Licznik: {{ counter() }}</p>
-<button (click)="increment()">+</button>
+<section class="dashboard">
+
+  <app-stats-section />
+
+  <section class="cars-section">
+
+    <header class="section-header">
+      <h2>Aktualnie sprzedawane</h2>
+
+      <button class="show-all">
+        Wyświetl wszystkie →
+      </button>
+    </header>
+
+      <div class="cards three-cols">
+        @for (car of activeCars(); track car.salePrice) {
+          <app-car-card [car]="car" />
+        }
+      </div>
+  </section>
+
+  <section class="cars-section">
+
+    <header class="section-header">
+      <h2>Najlepiej sprzedane samochody</h2>
+
+      <button class="show-all">
+        Wyświetl wszystkie →
+      </button>
+    </header>
+
+    <div class="cards three-cols">
+      @for (car of soldCars(); track car.salePrice) {
+        <app-car-card [car]="car" />
+      }
+    </div>
+
+  </section>
+
+</section>
+
+<button class="fab" (click)="openAddCar()">+</button>
+
+@if (showAddCar()) {
+  <app-add-car-modal (close)="closeAddCar()" />
+}

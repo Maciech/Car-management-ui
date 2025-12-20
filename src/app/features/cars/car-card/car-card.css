@@ -1,0 +1,20 @@
+.car-card {
+  background: #325ad0;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.status {
+  display: inline-block;
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+.status.sold {
+  color: #4caf50;
+}
+
+:host {
+  display: block;
+}
+

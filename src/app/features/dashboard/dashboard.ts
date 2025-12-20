@@ -1,15 +1,40 @@
 import {Component, signal} from '@angular/core';
+import {StatsSection} from './components/stats-section/stats-section';
+
+import {AddCarModal} from '../cars/add-car-modal/add-car-modal';
+import {Car} from '../cars/car-model';
+import {CarService} from '../cars/car-service';
+import {CarCard} from '../cars/car-card/car-card';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [StatsSection, CarCard, AddCarModal],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
-  counter = signal(0);
 
-  increment() {
-    this.counter.update(v => v + 1);
+  showAddCar = signal(false);
+
+  cars = signal<Car[]>([]);
+
+  constructor(private carService: CarService) {
+    this.carService.getAll().subscribe(cars => this.cars.set(cars));
+  }
+
+  activeCars() {
+    return this.cars().filter(c => !c.isSold).slice(0, 3);
+  }
+
+  soldCars() {
+    return this.cars().filter(c => c.isSold).slice(0, 3);
+  }
+
+  openAddCar() {
+    this.showAddCar.set(true);
+  }
+
+  closeAddCar() {
+    this.showAddCar.set(false);
   }
 }

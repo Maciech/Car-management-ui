@@ -1,0 +1,68 @@
+<div class="overlay" (click)="closeModal()">
+
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <header>
+      <h2>Dodaj samochód</h2>
+      <button class="close" (click)="closeModal()">✕</button>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <div class="field">
+        <label>Marka</label>
+        <input formControlName="brand" />
+      </div>
+
+      <div class="field">
+        <label>Model</label>
+        <input formControlName="model" />
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Rok</label>
+          <input type="number" formControlName="year" />
+        </div>
+
+        <div class="field">
+          <label>Status</label>
+          <select formControlName="status">
+            <option value="ACTIVE">Aktywny</option>
+            <option value="SOLD">Sprzedany</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Cena zakupu</label>
+          <input type="number" formControlName="purchasePrice" />
+        </div>
+
+        <div class="field">
+          <label>Cena sprzedaży</label>
+          <input type="number" formControlName="salePrice" />
+        </div>
+      </div>
+
+      <footer>
+        <button type="button" (click)="closeModal()">Anuluj</button>
+
+        <button
+          type="submit"
+          class="primary"
+          [disabled]="submitting()"
+        >
+          @if (submitting()) {
+            Zapisywanie...
+          } @else {
+            Zapisz
+          }
+        </button>
+      </footer>
+
+    </form>
+  </div>
+
+</div>

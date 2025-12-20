@@ -1,0 +1,82 @@
+.cars-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* nagłówek sekcji */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* przycisk "wyświetl wszystkie" */
+.show-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 12px;
+  border-radius: 6px;
+
+  background: var(--sidebar-bg);
+  color: #fff;
+
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.show-all:hover {
+  background: #2a2a45;
+}
+
+.show-all:active {
+  transform: translateY(1px);
+}
+
+/* grid 3-kolumnowy */
+.cards.three-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+
+  background: var(--sidebar-bg);
+  color: #fff;
+
+  font-size: 32px;
+  line-height: 1;
+
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.fab:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.fab:active {
+  transform: scale(0.95);
+}
