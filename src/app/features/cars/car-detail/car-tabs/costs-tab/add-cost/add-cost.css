@@ -1,0 +1,50 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  width: 360px;
+  height: 100vh;
+
+  background: #1f1f2e;
+  padding: 24px;
+
+  z-index: 1001;
+  box-shadow: -8px 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.panel h3 {
+  margin-top: 0;
+  color: #fff;
+}
+
+label {
+  display: block;
+  margin-bottom: 12px;
+  color: #bbb;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+
+  border-radius: 6px;
+  border: none;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+
+  border-radius: 6px;
+  border: none;
+}

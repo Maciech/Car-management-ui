@@ -1,0 +1,10 @@
+<section class="summary app-card">
+  <h1>{{ car.brand }} {{ car.model }}</h1>
+
+  <div class="grid">
+    <div><span>Rok: </span>{{ car.productionYear }}</div>
+    <div><span>Status: </span>{{ car.isSold }}</div>
+    <div><span>Kupno: </span>{{ car.purchasePrice }} zł</div>
+    <div><span>Sprzedaż: </span>{{ car.salePrice ?? '—' }}</div>
+  </div>
+</section>

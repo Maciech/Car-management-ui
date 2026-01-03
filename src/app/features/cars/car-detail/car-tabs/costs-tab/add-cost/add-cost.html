@@ -1,0 +1,44 @@
+<div class="overlay" (click)="cancel.emit()"></div>
+
+<div class="panel">
+
+  <h3>Dodaj koszt</h3>
+
+  <label>
+    Opis
+    <input [(ngModel)]="description" />
+  </label>
+
+  <label>
+    Kwota
+    <input type="number" [(ngModel)]="amount" />
+  </label>
+
+  <label>
+    Typ
+    <select [(ngModel)]="type" name="type" required>
+      <option value="" disabled selected>Wybierz typ wydatku</option>
+      @for (expenseType of expenseTypes; track expenseType) {
+        <option [value]="expenseType">
+          {{ expenseType }}
+        </option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Płatnik
+    <input [(ngModel)]="payer" />
+  </label>
+
+  <label>
+    Data
+    <input type="date" [(ngModel)]="date" />
+  </label>
+
+  <div class="actions">
+    <button class="cancel" (click)="cancel.emit()">Anuluj</button>
+    <button class="save" (click)="submit()">Zapisz</button>
+  </div>
+
+</div>

@@ -1,0 +1,16 @@
+@if (loading()) {
+  <p class="loading">Ładowanie...</p>
+} @else if (car()) {
+
+  <section class="car-detail">
+
+    <app-car-summary [car]="car()!" />
+
+    <app-car-gallery [carId]="car()?.carId!"
+                     (changed)="load()" ]/>
+
+    <app-car-tabs [carId]="car()!.carId!" />
+
+  </section>
+
+}

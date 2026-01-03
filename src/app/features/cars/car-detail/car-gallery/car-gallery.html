@@ -1,0 +1,61 @@
+<section class="gallery app-card">
+
+  <div class="gallery-header">
+    <h3>Zdjęcia</h3>
+
+    <label class="upload-btn">
+      ＋ Dodaj
+      <input
+        type="file"
+        multiple
+        accept="image/*"
+        hidden
+        (change)="onFilesSelected($event)"
+      />
+    </label>
+  </div>
+
+  @if (uploadImages().length) {
+    <div class="strip preview">
+      @for (img of uploadImages(); track img) {
+        <img class="thumb pending" [src]="img.preview" />
+      }
+    </div>
+
+    <button
+      class="save-btn"
+      [disabled]="uploading()"
+      (click)="upload()">
+      Zapisz zdjęcia
+    </button>
+  }
+
+  <div class="strip">
+    @for (img of images(); track img.imageId) {
+      <div class="thumb-wrapper">
+
+        <img
+          class="thumb"
+          [src]="img.url"
+          (click)="open(img.url)"
+        />
+
+        <button
+          class="icon-btn delete-btn"
+          (click)="deleteImageByImageId(img.imageId)"
+          title="Usuń"
+        >
+          <span class="material-icons">delete</span>
+        </button>
+
+      </div>
+    }
+  </div>
+
+  @if (selected()) {
+    <div class="overlay" (click)="close()">
+      <img class="full" [src]="selected()" />
+    </div>
+  }
+
+</section>

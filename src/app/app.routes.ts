@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import {Shell} from './core/layout/shell/shell';
+import {CarDetail} from './features/cars/car-detail/car-detail';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,13 @@ export const routes: Routes = [
             .then(m => m.Profile),
         data: {
           title: 'Profile',
+        }
+      },
+      {
+        path: 'cars/:id',
+        component: CarDetail,
+        data: {
+          title: 'Szczegóły samochodu'
         }
       }
     ]

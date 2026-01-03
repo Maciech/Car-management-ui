@@ -1,0 +1,180 @@
+.cost-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+}
+
+.cost-data {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+}
+
+.cost-data .col {
+  padding-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cost-data .col:first-child {
+  border-left: none;
+  padding-left: 0;
+}
+
+.cost-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@media (max-width: 900px) {
+  .cost-card {
+    grid-template-columns: 1fr auto;
+  }
+
+  .cost-meta {
+    display: none;
+  }
+
+  .cost-data {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: auto;
+  }
+
+  .cost-actions {
+    align-self: start;
+  }
+}
+
+
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+
+  background: var(--sidebar-bg);
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 12px;
+}
+
+
+.amount {
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  gap: 16px;
+}
+
+.costs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.costs-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+.add-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+
+  background: var(--sidebar-bg);
+  color: #fff;
+
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background-image: url("../../../../../assets/edit_icon.png");
+  image-resolution: inherit;
+  color: #fff;
+
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background: #2a2a45;
+}
+
+.add-btn:hover {
+  background: #2a2a45;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.filters select {
+  flex: 1;
+
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+
+  background: #2f2f68;
+  color: #fff;
+
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.filters select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .filters {
+    flex-direction: column;
+  }
+}
+@media (max-width: 900px) {
+  .cost-card {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "info edit"
+      "type amount"
+      "date amount"
+      "payer amount";
+  }
+
+  .icon {
+    display: none;
+  }
+
+  .amount {
+    grid-area: amount;
+    align-self: center;
+  }
+
+  .icon-btn {
+    grid-area: edit;
+  }
+}
+
+

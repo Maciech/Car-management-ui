@@ -11,4 +11,46 @@ html, body {
 :root {
   --sidebar-bg: #1e1e2f;
   --primary-accent: #3f8cff;
+  --card-table-bg: #2f2f8c;
+  --card-bg: #3d3d95;
+  --card-bg-soft: #6161af;
+  --text-main: #ffffff;
+  --text-muted: #b8b8d9;
 }
+
+/* UNIWERSALNA KARTA */
+
+.app-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 16px;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  padding: 6px;
+
+  cursor: pointer;
+  color: #b8b8d9;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.material-icons {
+  font-size: 20px;
+}
+
+

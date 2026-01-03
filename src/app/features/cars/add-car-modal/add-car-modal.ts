@@ -41,8 +41,10 @@ export class AddCarModal {
     const raw = this.form.getRawValue();
 
     const car: Car = {
+      carId: 0,
+      images: [],
       ...raw,
-      salePrice: raw.salePrice ?? undefined,
+      salePrice: raw.salePrice ?? undefined
     };
 
     this.carService.create(car).subscribe({

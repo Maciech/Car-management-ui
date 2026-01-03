@@ -1,0 +1,32 @@
+.car-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.loading {
+  padding: 48px;
+  text-align: center;
+  color: #bbb;
+  font-size: 15px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1024px) {
+  .car-detail {
+    padding: 16px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .car-detail {
+    padding: 12px;
+    gap: 16px;
+  }
+}

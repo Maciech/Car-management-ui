@@ -1,14 +1,13 @@
-<div class="car-card">
-  <h3>{{ car.brand }} {{ car.model }}</h3>
+<div class="app-card" (click)="open()">
+  <strong>{{ car.brand }} {{ car.model }}</strong>
 
-  <p>Rok: {{ car.productionYear }}</p>
-  <p>Kupno: {{ car.purchasePrice }} zł</p>
+  <div class="info">
+    <strong>Rok: {{ car.productionYear }}</strong>
+    <strong>Kupno: {{ car.purchasePrice }} zł</strong>
 
-  @if (car.salePrice) {
-    <p>Sprzedaż: {{ car.salePrice }} zł</p>
-  }
+    @if (car.salePrice) {
+      <p>Sprzedaż: {{ car.salePrice }} zł</p>
+    }
+  </div>
 
-  <span class="status" [class.sold]="isSold">
-    {{ car.isSold }}
-  </span>
 </div>

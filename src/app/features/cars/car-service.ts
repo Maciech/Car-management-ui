@@ -29,4 +29,9 @@ export class CarService {
     return this.http.get<Car[]>(this.HOST_URL + this.API);
   }
 
+  getById(id: number) {
+    this.loading.set(true);
+    return this.http.get<Car>(`${this.HOST_URL + this.API}/${id}`);
+  }
+
 }
