@@ -1,43 +1,90 @@
 .stats {
-  background: #fff;
-  padding: 16px;
-  border-radius: 8px;
+  background: var(--card-bg);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color: var(--text-main);
 }
 
-header {
+.stats header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.stats header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.ranges {
+  display: flex;
+  gap: var(--spacing-sm);
 }
 
 .ranges button {
-  margin-left: 8px;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
 }
 
-.ranges .active {
-  font-weight: bold;
+.ranges button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-main);
+}
+
+.ranges button.active {
+  background: var(--sidebar-bg);
+  color: var(--text-main);
+  font-weight: 600;
 }
 
 .kpis {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: 16px;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.kpi span {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 .kpi strong {
   display: block;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-main);
 }
 
-.profit {
-  color: green;
+.kpi strong.profit {
+  color: var(--success);
 }
 
 .chart-placeholder {
-  margin-top: 24px;
+  margin-top: var(--spacing-xl);
   height: 200px;
-  background: #f4f4f4;
+  background: var(--card-bg-darker);
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-color);
 }

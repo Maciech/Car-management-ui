@@ -28,9 +28,14 @@ export class CarDetail implements OnInit {
   load() {
     this.loading.set(true);
     const carId = Number(this.route.snapshot.paramMap.get('id'));
-    this.carsService.getById(carId).subscribe(car => {
-      this.car.set(car);
-      this.loading.set(false);
+    this.carsService.getById(carId).subscribe({
+      next: (car) => {
+        this.car.set(car);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+      },
     });
   }
 }

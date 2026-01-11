@@ -1,16 +1,19 @@
 .layout {
   display: flex;
   height: 100vh;
+  background: var(--background);
 }
 
 .content {
   flex: 1;
   display: flex;
   flex-direction: column;
+  background: var(--background);
 }
 
 main {
-  padding: 1rem;
+  padding: var(--spacing-lg);
   flex: 1;
   overflow: auto;
+  background: var(--background);
 }

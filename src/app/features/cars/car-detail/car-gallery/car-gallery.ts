@@ -26,9 +26,14 @@ export class CarGallery implements OnInit {
   uploadImages = signal<UploadImage[]>([]);
 
   ngOnInit() {
-    this.imageService.getImagesByCarId(this.carId).subscribe((images: ImageModel[]) => {
-      this.images.set(images);
-    })
+    this.imageService.getImagesByCarId(this.carId).subscribe({
+      next: (images: ImageModel[]) => {
+        this.images.set(images);
+      },
+      error: () => {
+        this.images.set(null);
+      },
+    });
   }
 
   onFilesSelected(event: Event) {
@@ -50,7 +55,6 @@ export class CarGallery implements OnInit {
 
   upload() {
     if (!this.uploadImages().length) return;
-    console.log(this.carId);
     this.uploading.set(true);
 
     this.imageService
@@ -62,7 +66,9 @@ export class CarGallery implements OnInit {
           this.uploading.set(false);
           this.changed.emit();
         },
-        error: () => this.uploading.set(false),
+        error: () => {
+          this.uploading.set(false);
+        },
       });
   }
 
@@ -75,9 +81,15 @@ export class CarGallery implements OnInit {
   }
 
   deleteImageByImageId(id: number) {
-    console.log(id);
-    this.imageService.deleteImagesByCarId(id).subscribe();
-    this.changed.emit();
+    this.imageService.deleteImagesByCarId(id).subscribe({
+      next: () => {
+        this.changed.emit();
+        this.images.update(images => images?.filter(img => img.imageId !== id) || null);
+      },
+      error: () => {
+        // Obsługa błędu usuwania
+      },
+    });
   }
 
 }

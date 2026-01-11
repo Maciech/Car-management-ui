@@ -19,7 +19,15 @@ export class Dashboard {
   cars = signal<Car[]>([]);
 
   constructor(private carService: CarService) {
-    this.carService.getAll().subscribe(cars => this.cars.set(cars));
+    this.carService.getAll().subscribe({
+      next: (cars) => {
+        this.cars.set(cars);
+      },
+      error: () => {
+        // Obsługa błędu ładowania samochodów
+        this.cars.set([]);
+      },
+    });
   }
 
   activeCars() {

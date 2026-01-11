@@ -12,9 +12,9 @@ import {ExpenseType} from '../../../../../shared/ui/enums/expense-type';
   templateUrl: './costs-tab.html',
   styleUrl: './costs-tab.css',
 })
-export class CostsTab implements OnInit{
+export class CostsTab implements OnInit {
   @Input() carId!: number;
-  costs  = signal<CostModel[]>([])
+  costs = signal<CostModel[]>([]);
   showAdd = signal(false);
   selectedType = signal<string | null>(null);
   selectedPayer = signal<string | null>(null);
@@ -58,10 +58,16 @@ export class CostsTab implements OnInit{
 
   getCostsByCarId() {
     this.costService.getAllCostsByCarId(this.carId)
-      .subscribe(costs => {
-        this.costs.set(costs)
-        this.expenseSum.set(costs.map(value => value.amount)
-          .reduce((a, b) => a + b));
+      .subscribe({
+        next: (costs) => {
+          this.costs.set(costs);
+          this.expenseSum.set(costs.length > 0
+            ? costs.map(value => value.amount).reduce((a, b) => a + b)
+            : 0);
+        },
+        error: () => {
+          // Obsługa błędu ładowania kosztów
+        },
       });
   }
 

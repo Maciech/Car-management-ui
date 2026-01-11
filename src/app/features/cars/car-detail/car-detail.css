@@ -1,17 +1,17 @@
 .car-detail {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--spacing-xl);
 
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
+  padding: var(--spacing-xl);
 }
 
 .loading {
   padding: 48px;
   text-align: center;
-  color: #bbb;
+  color: var(--text-muted);
   font-size: 15px;
 }
 
@@ -19,14 +19,14 @@
 
 @media (max-width: 1024px) {
   .car-detail {
-    padding: 16px;
-    gap: 20px;
+    padding: var(--spacing-lg);
+    gap: var(--spacing-xl);
   }
 }
 
 @media (max-width: 600px) {
   .car-detail {
-    padding: 12px;
-    gap: 16px;
+    padding: var(--spacing-md);
+    gap: var(--spacing-lg);
   }
 }

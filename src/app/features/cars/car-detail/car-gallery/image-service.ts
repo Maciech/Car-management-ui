@@ -1,6 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 import {ImageModel} from './image-model';
+import {environment} from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -8,10 +10,10 @@ import {ImageModel} from './image-model';
 export class ImageService {
 
   private readonly API = '/api/cars';
-  private readonly HOST_URL = 'http://localhost:8080';
+  private readonly HOST_URL = environment.apiUrl;
   private http = inject(HttpClient);
 
-  upload(carId: number, images: { file: File }[]) {
+  upload(carId: number, images: { file: File }[]): Observable<ImageModel[]> {
     const form = new FormData();
 
     images.forEach(img => {
@@ -24,11 +26,11 @@ export class ImageService {
     );
   }
 
-  getImagesByCarId(carId: number) {
+  getImagesByCarId(carId: number): Observable<ImageModel[]> {
     return this.http.get<ImageModel[]>(this.HOST_URL + this.API + `/images/${carId}`);
   }
 
-  deleteImagesByCarId(imageId: number) {
-    return this.http.delete(this.HOST_URL + this.API + `/images/${imageId}`);
+  deleteImagesByCarId(imageId: number): Observable<void> {
+    return this.http.delete<void>(this.HOST_URL + this.API + `/images/${imageId}`);
   }
 }
