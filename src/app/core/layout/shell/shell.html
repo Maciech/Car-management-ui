@@ -1,13 +1,18 @@
-<div class="layout">
-  <app-sidebar />
+@if (auth.isLoggedIn()) {
+  <div class="layout">
+    <app-sidebar />
 
-  <div class="content">
-    <app-topbar />
-    <main>
-      <router-outlet />
-    </main>
+    <div class="content">
+      <app-topbar />
+      <main>
+        <router-outlet />
+      </main>
+    </div>
+
+    <app-toast-component />
+
   </div>
+}
 
-  <app-toast-component />
+<router-outlet />
 
-</div>

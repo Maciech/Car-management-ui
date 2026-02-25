@@ -1,1 +1,40 @@
-<p>login works!</p>
+<section class="login-page">
+  <div class="login-card app-card">
+
+    <h2 *ngIf="!isRegisterMode">Zaloguj się</h2>
+    <h2 *ngIf="isRegisterMode">Zarejestruj się</h2>
+
+    <input
+      type="email"
+      placeholder="Email"
+      [(ngModel)]="email"
+    />
+
+    <input
+      type="password"
+      placeholder="Hasło"
+      [(ngModel)]="password"
+    />
+
+    <button *ngIf="!isRegisterMode" (click)="login()">
+      Zaloguj
+    </button>
+
+    <button *ngIf="isRegisterMode" (click)="register()">
+      Zarejestruj
+    </button>
+
+    <p class="switch-mode">
+      <span *ngIf="!isRegisterMode">
+        Nie masz konta?
+        <a (click)="toggleMode()">Zarejestruj się</a>
+      </span>
+
+      <span *ngIf="isRegisterMode">
+        Masz już konto?
+        <a (click)="toggleMode()">Zaloguj się</a>
+      </span>
+    </p>
+
+  </div>
+</section>
