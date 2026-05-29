@@ -1,43 +1,50 @@
-import {Component, computed, Input, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, Input, OnInit, signal} from '@angular/core';
 import {CostModel} from './cost-model';
 import {CostsService} from './costs-service';
 import {AddCost} from './add-cost/add-cost';
 import {ExpenseType} from '../../../../../shared/ui/enums/expense-type';
+import {AgGridAngular} from 'ag-grid-angular';
+import {ToastService} from '../../../../../shared/ui/toast-service';
+import {colorSchemeDarkBlue, GridReadyEvent, SizeColumnsToContentStrategy, themeQuartz, GridOptions} from 'ag-grid-community';
 
 @Component({
   selector: 'app-costs-tab',
   imports: [
-    AddCost
+    AddCost,
+    AgGridAngular
   ],
   templateUrl: './costs-tab.html',
   styleUrl: './costs-tab.css',
 })
 export class CostsTab implements OnInit {
   @Input() carId!: number;
-  costs = signal<CostModel[]>([]);
+
   showAdd = signal(false);
-  selectedType = signal<string | null>(null);
-  selectedPayer = signal<string | null>(null);
   expenseSum = signal<number | null>(null);
   editingCost = signal<CostModel | null>(null);
 
-  expenseTypes = Object.values(ExpenseType);
+  costService = inject(CostsService);
+  toastService = inject(ToastService);
+  myTheme = themeQuartz.withPart(colorSchemeDarkBlue);
 
-  filteredCosts = computed(() => {
-    return this.costs().filter(cost => {
-      const typeOk =
-        !this.selectedType() || cost.type === this.selectedType();
+  rowData: any[] = [];
 
-      // const payerOk =
-      //   !this.selectedPayer() || cost.payer === this.selectedPayer();
-
-      return typeOk;
-    });
-  });
+  gridOptions: GridOptions = {
+    autoSizeStrategy: {
+      type: 'fitCellContents'
+    } as SizeColumnsToContentStrategy
+  };
 
 
+  columnDefs = [
+    { field: 'expenseId', headerName: 'ID' },
+    { field: 'type', headerName: 'Typ', sortable: true, filter: true },
+    { field: 'date', headerName: 'Data', sortable: true },
+    { field: 'description', headerName: 'Opis', filter: true },
+    { field: 'payer', headerName: 'Płatnik' , sortable: true, filter: true},
+    { field: 'amount', headerName: 'Wartość [zł]', sortable: true, filter: true},
+  ];
 
-  constructor(private costService: CostsService) {}
 
   ngOnInit() {
     this.getCostsByCarId();
@@ -60,13 +67,13 @@ export class CostsTab implements OnInit {
     this.costService.getAllCostsByCarId(this.carId)
       .subscribe({
         next: (costs) => {
-          this.costs.set(costs);
+          this.rowData = costs;
           this.expenseSum.set(costs.length > 0
             ? costs.map(value => value.amount).reduce((a, b) => a + b)
             : 0);
         },
         error: () => {
-          // Obsługa błędu ładowania kosztów
+          this.toastService.show("Koszty dla podanego samochodu nie zostały znalezione")
         },
       });
   }
@@ -74,5 +81,9 @@ export class CostsTab implements OnInit {
   editCost(expense: CostModel) {
       this.editingCost.set(expense);
       this.showAdd.set(true);
+  }
+
+  onGridReady(params: GridReadyEvent) {
+    params.api.sizeColumnsToFit();
   }
 }

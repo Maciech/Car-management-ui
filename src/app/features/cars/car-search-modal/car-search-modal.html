@@ -1,0 +1,169 @@
+<div class="overlay" (click)="close.emit()">
+  <div class="search-panel" (click)="$event.stopPropagation()">
+
+    <div class="panel-left">
+      <header>
+        <h2>Wyszukaj samochód</h2>
+        <button class="close-btn" (click)="close.emit()">✕</button>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="search()" class="filter-form">
+
+        <!-- Marka -->
+        <div class="filter-group">
+          <label>Marka</label>
+          <input
+            type="text"
+            list="search-makes"
+            formControlName="brand"
+            placeholder="np. BMW, Toyota..."
+            (change)="onBrandChange($event)"
+            autocomplete="off" />
+          <datalist id="search-makes">
+            @for (m of carService.makes(); track m) {
+              <option [value]="m"></option>
+            }
+          </datalist>
+        </div>
+
+        <!-- Generacja -->
+        <div class="filter-group">
+          <label>Generacja</label>
+          <input
+            type="text"
+            list="search-gens"
+            formControlName="generation"
+            placeholder="{{ generationOptions().length ? 'np. F30, E46, W204...' : 'Najpierw wybierz markę' }}"
+            (change)="onGenerationChange($event)"
+            autocomplete="off" />
+          <datalist id="search-gens">
+            @for (g of generationOptions(); track g.code) {
+              <option [value]="g.code">{{ g.label }}</option>
+            }
+          </datalist>
+        </div>
+
+        <!-- Wariant / model -->
+        <div class="filter-group">
+          <label>Wariant / model</label>
+          <input
+            type="text"
+            formControlName="model"
+            placeholder="np. 320d, M3, 2.0 TDI..."
+            autocomplete="off" />
+        </div>
+
+        <!-- Rok -->
+        <div class="filter-group">
+          <label>
+            Rok produkcji
+            @if (yearRange(); as r) {
+              <span class="range-hint">{{ r.minYear }} – {{ r.maxYear }}</span>
+            }
+          </label>
+          <div class="range-row">
+            <input type="number" formControlName="minYear"
+              [min]="yearRange()?.minYear ?? 1900"
+              [max]="yearRange()?.maxYear ?? 2026"
+              [placeholder]="yearRange() ? yearRange()!.minYear : 'Od'" />
+            <span>–</span>
+            <input type="number" formControlName="maxYear"
+              [min]="yearRange()?.minYear ?? 1900"
+              [max]="yearRange()?.maxYear ?? 2026"
+              [placeholder]="yearRange() ? yearRange()!.maxYear : 'Do'" />
+          </div>
+        </div>
+
+        <!-- Cena -->
+        <div class="filter-group">
+          <label>Cena (zł)</label>
+          <div class="range-row">
+            <input type="number" formControlName="minPrice" placeholder="Od" />
+            <span>–</span>
+            <input type="number" formControlName="maxPrice" placeholder="Do" />
+          </div>
+        </div>
+
+        <!-- Przebieg -->
+        <div class="filter-group">
+          <label>Przebieg (km)</label>
+          <div class="range-row">
+            <input type="number" formControlName="minMileage" placeholder="Od" />
+            <span>–</span>
+            <input type="number" formControlName="maxMileage" placeholder="Do" />
+          </div>
+        </div>
+
+        <!-- Moc -->
+        <div class="filter-group">
+          <label>Moc (kW)</label>
+          <div class="range-row">
+            <input type="number" formControlName="minPower" placeholder="Od" />
+            <span>–</span>
+            <input type="number" formControlName="maxPower" placeholder="Do" />
+          </div>
+        </div>
+
+        <!-- Kolor -->
+        <div class="filter-group">
+          <label>Kolor</label>
+          <select formControlName="color">
+            <option value="">Dowolny</option>
+            @for (c of colors; track c.value) {
+              <option [value]="c.value">{{ c.label }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Checkboxy -->
+        <div class="filter-group checkboxes">
+          <label class="checkbox-label">
+            <input type="checkbox"
+              (change)="form.get('isImported')?.setValue($any($event.target).checked ? true : null)" />
+            Tylko importowane
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox"
+              (change)="form.get('isDamaged')?.setValue($any($event.target).checked ? true : null)" />
+            Uszkodzone
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-reset" (click)="reset()">Wyczyść</button>
+          <button type="submit" class="btn-search" [disabled]="loading()">
+            {{ loading() ? 'Szukam...' : 'Szukaj' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Wyniki -->
+    <div class="panel-right">
+      @if (!searched()) {
+        <div class="hint">
+          <span class="hint-icon">🔍</span>
+          <p>Ustaw filtry i kliknij <strong>Szukaj</strong></p>
+        </div>
+      } @else if (loading()) {
+        <div class="hint">Wyszukiwanie...</div>
+      } @else if (results(); as cars) {
+        @if (cars.length === 0) {
+          <div class="hint">Brak wyników dla podanych kryteriów.</div>
+        } @else {
+          <div class="results-header">
+            Znaleziono <strong>{{ cars.length }}</strong>
+            {{ cars.length === 1 ? 'samochód' : 'samochodów' }}
+          </div>
+          <div class="results-grid">
+            @for (car of cars; track car.carId) {
+              <app-car-card [car]="car" />
+            }
+          </div>
+        }
+      }
+    </div>
+
+  </div>
+</div>

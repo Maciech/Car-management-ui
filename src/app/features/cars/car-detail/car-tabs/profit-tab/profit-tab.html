@@ -1,0 +1,65 @@
+@if (loading()) {
+  <div class="loading">Ładowanie danych finansowych...</div>
+} @else if (error()) {
+  <div class="error">Nie udało się załadować danych finansowych.</div>
+} @else if (summary(); as s) {
+  <div class="profit-grid">
+
+    <div class="profit-section">
+      <h3>Inwestycja</h3>
+      <div class="rows">
+        <div class="row">
+          <span>Cena zakupu</span>
+          <strong>{{ s.purchasePrice | currency:'PLN':'symbol':'1.0-0':'pl' }}</strong>
+        </div>
+        <div class="row">
+          <span>Łączne koszty</span>
+          <strong>{{ s.totalExpenses | currency:'PLN':'symbol':'1.0-0':'pl' }}</strong>
+        </div>
+        <div class="row total">
+          <span>Zainwestowano łącznie</span>
+          <strong>{{ s.investedAmount | currency:'PLN':'symbol':'1.0-0':'pl' }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="profit-section">
+      <h3>Wynik</h3>
+      <div class="rows">
+        <div class="row">
+          <span>Cena sprzedaży</span>
+          <strong>{{ s.salePrice != null ? (s.salePrice | currency:'PLN':'symbol':'1.0-0':'pl') : '—' }}</strong>
+        </div>
+        <div class="row">
+          <span>Zysk / Strata</span>
+          <strong [ngClass]="profitClass">
+            {{ s.profit != null ? (s.profit | currency:'PLN':'symbol':'1.0-0':'pl') : '—' }}
+          </strong>
+        </div>
+        <div class="row">
+          <span>ROI</span>
+          <strong [ngClass]="profitClass">{{ roiFormatted }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="profit-section highlight">
+      <h3>Timing</h3>
+      <div class="rows">
+        <div class="row">
+          <span>Dni w portfelu</span>
+          <strong>{{ s.daysHeld }}</strong>
+        </div>
+        @if (s.profit != null && s.daysHeld > 0) {
+          <div class="row">
+            <span>Zysk / dzień</span>
+            <strong [ngClass]="profitClass">
+              {{ (s.profit / s.daysHeld) | currency:'PLN':'symbol':'1.0-2':'pl' }}
+            </strong>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+}

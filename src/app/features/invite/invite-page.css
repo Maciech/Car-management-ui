@@ -1,0 +1,97 @@
+.invite-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+  padding: var(--spacing-lg);
+}
+
+.invite-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.state-icon {
+  font-size: 52px;
+  line-height: 1;
+}
+
+h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.car-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.sub {
+  font-size: 13px;
+}
+
+.redirect-hint {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  width: 100%;
+  margin-top: var(--spacing-md);
+}
+
+.btn-primary {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--primary-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: opacity 0.15s ease;
+}
+
+.btn-primary:hover { opacity: 0.88; }
+
+.btn-outline {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 14px;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.btn-outline:hover {
+  border-color: var(--text-muted);
+  color: var(--text-main);
+}

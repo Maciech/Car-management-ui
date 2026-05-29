@@ -1,44 +1,51 @@
 <section class="stats">
 
   <header>
-    <h2>Statystyki sprzedaży</h2>
-
-    <div class="ranges">
-      <button
-        [class.active]="range() === 'year'"
-        (click)="setRange('year')"
-      >
-        Rok
-      </button>
-
-      <button
-        [class.active]="range() === 'month'"
-        (click)="setRange('month')"
-      >
-        Miesiąc
-      </button>
-    </div>
+    <h2>Portfel handlarski</h2>
   </header>
 
-  <div class="kpis">
-    <div class="kpi">
-      <span>Przychód</span>
-      <strong>320 000 zł</strong>
+  @if (loading()) {
+    <div class="kpis">
+      <div class="kpi"><span>Ładowanie...</span></div>
+    </div>
+  } @else if (stats(); as s) {
+    <div class="counters">
+      <div class="counter">
+        <span>{{ s.activeCars }}</span>
+        <label>aktywnych aut</label>
+      </div>
+      <div class="counter">
+        <span>{{ s.soldCars }}</span>
+        <label>sprzedanych</label>
+      </div>
+      <div class="counter">
+        <span>{{ s.totalCars }}</span>
+        <label>łącznie</label>
+      </div>
     </div>
 
-    <div class="kpi">
-      <span>Koszty</span>
-      <strong>220 000 zł</strong>
-    </div>
+    <div class="kpis">
+      <div class="kpi">
+        <span>Zainwestowane (aktywne)</span>
+        <strong>{{ s.totalInvestedInActive | currency:'PLN':'symbol':'1.0-0':'pl' }}</strong>
+      </div>
 
-    <div class="kpi">
-      <span>Zysk</span>
-      <strong class="profit">100 000 zł</strong>
-    </div>
-  </div>
+      <div class="kpi">
+        <span>Przychód ze sprzedaży</span>
+        <strong>{{ s.soldRevenue | currency:'PLN':'symbol':'1.0-0':'pl' }}</strong>
+      </div>
 
-  <div class="chart-placeholder">
-    Wykres ({{ range() }})
-  </div>
+      <div class="kpi">
+        <span>Zysk netto</span>
+        <strong [class]="profitClass">
+          {{ s.totalProfit | currency:'PLN':'symbol':'1.0-0':'pl' }}
+        </strong>
+      </div>
+    </div>
+  } @else {
+    <div class="kpis">
+      <div class="kpi"><span>Brak danych</span></div>
+    </div>
+  }
 
 </section>

@@ -1,10 +1,15 @@
 <section class="summary app-card">
-  <h1>{{ car.brand }} {{ car.model }}</h1>
+  <div class="summary-header">
+    <h1>{{ car.brand }} {{ car.model }}</h1>
+    <span class="status-badge" [class]="statusCss">{{ statusLabel }}</span>
+  </div>
 
   <div class="grid">
-    <div><span>Rok: </span>{{ car.productionYear }}</div>
-    <div><span>Status: </span>{{ car.isSold }}</div>
-    <div><span>Kupno: </span>{{ car.purchasePrice }} zł</div>
-    <div><span>Sprzedaż: </span>{{ car.salePrice ?? '—' }}</div>
+    <div><span>Rok produkcji</span>{{ car.productionYear }}</div>
+    <div><span>Przebieg</span>{{ car.mileage | number:'1.0-0' }} km</div>
+    <div><span>Cena zakupu</span>{{ car.purchasePrice | number:'1.0-0' }} zł</div>
+    <div><span>Cena sprzedaży</span>{{ car.salePrice != null ? (car.salePrice | number:'1.0-0') + ' zł' : '—' }}</div>
+    <div><span>Importowany</span>{{ car.isImported ? 'Tak' : 'Nie' }}</div>
+    <div><span>Uszkodzony</span>{{ car.isDamaged ? 'Tak' : 'Nie' }}</div>
   </div>
 </section>

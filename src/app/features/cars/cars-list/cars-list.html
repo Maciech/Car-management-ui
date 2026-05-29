@@ -1,0 +1,38 @@
+<section class="cars-list-page">
+
+  <header class="page-header">
+    <h1>{{ pageTitle }}</h1>
+    <button class="fab-inline" (click)="openAddCar()">+ Dodaj auto</button>
+  </header>
+
+  <div class="filters">
+    @for (f of filters; track f.key) {
+      <button
+        class="filter-btn"
+        [class.active]="activeFilter() === f.key"
+        (click)="setFilter(f.key)">
+        {{ f.label }}
+        @if (activeFilter() === f.key) {
+          <span class="count">{{ filteredCars().length }}</span>
+        }
+      </button>
+    }
+  </div>
+
+  @if (filteredCars().length === 0) {
+    <div class="empty">
+      <p>Brak aut w tej kategorii.</p>
+    </div>
+  } @else {
+    <div class="grid">
+      @for (car of filteredCars(); track car.carId) {
+        <app-car-card [car]="car" />
+      }
+    </div>
+  }
+
+</section>
+
+@if (showAddCar()) {
+  <app-add-car-modal (close)="closeAddCar()" />
+}

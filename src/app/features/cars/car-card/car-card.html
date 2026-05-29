@@ -1,13 +1,47 @@
-<div class="app-card" (click)="open()">
-  <strong>{{ car.brand }} {{ car.model }}</strong>
+<div class="app-card car-card" (click)="open()">
 
-  <div class="info">
-    <strong>Rok: {{ car.productionYear }}</strong>
-    <strong>Kupno: {{ car.purchasePrice }} zł</strong>
-
-    @if (car.salePrice) {
-      <p>Sprzedaż: {{ car.salePrice }} zł</p>
+  <div class="image-area">
+    @if (currentImage; as img) {
+      <img [src]="img.url" [alt]="car.brand + ' ' + car.model" />
+    } @else {
+      <div class="no-image">
+        <span>Brak zdjęcia</span>
+      </div>
     }
+
+    @if (hasMultiple) {
+      <button class="nav-btn prev" (click)="prev($event)" aria-label="Poprzednie">&#8249;</button>
+      <button class="nav-btn next" (click)="next($event)" aria-label="Następne">&#8250;</button>
+
+      <div class="dots">
+        @for (img of images(); track img.imageId; let i = $index) {
+          <span class="dot" [class.active]="i === currentIndex()"></span>
+        }
+      </div>
+    }
+
+    <span class="status-badge image-badge" [class]="statusCss">{{ statusLabel }}</span>
+  </div>
+
+  <div class="card-body">
+    <strong class="car-name">{{ car.brand }} {{ car.model }}</strong>
+
+    <div class="info">
+      <div class="info-row">
+        <span>Rok</span>
+        <strong>{{ car.productionYear }}</strong>
+      </div>
+      <div class="info-row">
+        <span>Zakup</span>
+        <strong>{{ car.purchasePrice | number:'1.0-0' }} zł</strong>
+      </div>
+      @if (car.salePrice) {
+        <div class="info-row">
+          <span>Sprzedaż</span>
+          <strong>{{ car.salePrice | number:'1.0-0' }} zł</strong>
+        </div>
+      }
+    </div>
   </div>
 
 </div>

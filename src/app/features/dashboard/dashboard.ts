@@ -1,6 +1,6 @@
-import {Component, signal} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
+import {Router} from '@angular/router';
 import {StatsSection} from './components/stats-section/stats-section';
-
 import {AddCarModal} from '../cars/add-car-modal/add-car-modal';
 import {Car} from '../cars/car-model';
 import {CarService} from '../cars/car-service';
@@ -17,6 +17,8 @@ export class Dashboard {
   showAddCar = signal(false);
 
   cars = signal<Car[]>([]);
+
+  private router = inject(Router);
 
   constructor(private carService: CarService) {
     this.carService.getAll().subscribe({
@@ -38,11 +40,14 @@ export class Dashboard {
     return this.cars().filter(c => c.isSold).slice(0, 3);
   }
 
-  openAddCar() {
-    this.showAddCar.set(true);
+  openAddCar() { this.showAddCar.set(true); }
+  closeAddCar() { this.showAddCar.set(false); }
+
+  showAllActive() {
+    this.router.navigate(['/cars'], {queryParams: {status: 'AKTYWNE'}});
   }
 
-  closeAddCar() {
-    this.showAddCar.set(false);
+  showAllSold() {
+    this.router.navigate(['/cars'], {queryParams: {status: 'SPRZEDANE'}});
   }
 }

@@ -6,62 +6,6 @@
   <button class="add-btn" (click)="openAdd()">＋ Dodaj koszt</button>
 </div>
 
-<div class="filters app-card">
-
-  <!-- TYPE -->
-  <select
-    (change)="selectedType.set($any($event.target).value || null)">
-
-    <option value="">Wszystkie typy</option>
-
-    @for (type of expenseTypes; track type) {
-      <option [value]="type">{{ type }}</option>
-    }
-  </select>
-
-<!--  &lt;!&ndash; PAYER &ndash;&gt;-->
-<!--  <select-->
-<!--    (change)="selectedPayer.set($any($event.target).value || null)">-->
-
-<!--    <option value="">Wszyscy płatnicy</option>-->
-
-<!--    @for (payer of ['OWNER', 'COMPANY']; track payer) {-->
-<!--      <option [value]="payer">{{ payer }}</option>-->
-<!--    }-->
-<!--  </select>-->
-
-</div>
-
-@for (expense of filteredCosts(); track expense.expenseId) {
-  <div class="cost-card app-card">
-
-    <div class="cost-meta">
-      <span class="icon">💸</span>
-    </div>
-
-    <div class="cost-data">
-      <div class="col description">{{ expense.description }}</div>
-      <div class="col type">{{ expense.type }}</div>
-      <div class="col date">{{ expense.date }}</div>
-      <div class="col payer">{{ expense.payer }}</div>
-      <div class="col amount">{{ expense.amount }} zł</div>
-    </div>
-
-    <div class="cost-actions">
-      <button class="icon-btn" (click)="editCost(expense)">
-        <span class="material-icons">edit</span>
-      </button>
-    </div>
-
-  </div>
-
-}
-
-<div>
-  Suma kosztów: {{expenseSum()}}
-</div>
-
-
 @if (showAdd()) {
   <app-add-cost
     [carId]="carId"
@@ -69,4 +13,19 @@
     (saved)="onSaved()"
     (cancel)="closeAdd()" />
 }
+</div>
+<div class="app-card">
+  <ag-grid-angular
+    style="width: 100%; height: 500px;"
+    [theme]="myTheme"
+    [rowData]="rowData"
+    [columnDefs]="columnDefs"
+    [pagination]="true"
+    [paginationPageSize]="20"
+    [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>
+
+<div>
+  Suma kosztów: {{expenseSum()}}
 </div>

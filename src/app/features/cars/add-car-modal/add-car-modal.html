@@ -1,5 +1,4 @@
-<div class="overlay" (click)="closeModal()">
-
+<div class="overlay">
   <div class="modal" (click)="$event.stopPropagation()">
 
     <header>
@@ -9,60 +8,109 @@
 
     <form [formGroup]="form" (ngSubmit)="submit()">
 
+      <!-- 1. Marka -->
       <div class="field">
         <label>Marka</label>
-        <input formControlName="brand" />
+        <input type="text" list="ac-makes" formControlName="brand"
+          placeholder="np. BMW, Audi, Toyota..."
+          (change)="onBrandChange($event)" autocomplete="off" />
+        <datalist id="ac-makes">
+          @for (m of carService.makes(); track m) {
+            <option [value]="m"></option>
+          }
+        </datalist>
       </div>
 
+      <!-- 2. Generacja -->
       <div class="field">
-        <label>Model</label>
-        <input formControlName="model" />
+        <label>
+          Generacja
+          <span class="field-hint">np. F30, E46, W212</span>
+        </label>
+        <input type="text" list="ac-gens" formControlName="generation"
+          placeholder="{{ generationOptions().length ? 'Wybierz lub wpisz generację...' : 'Najpierw wybierz markę' }}"
+          (change)="onGenerationChange($event)" autocomplete="off" />
+        <datalist id="ac-gens">
+          @for (g of generationOptions(); track g.code) {
+            <option [value]="g.code">{{ g.label }}</option>
+          }
+        </datalist>
       </div>
 
+      <!-- 3. Wariant / model -->
+      <div class="field">
+        <label>Wariant / model</label>
+        <input type="text" formControlName="model"
+          placeholder="np. 320d, M3, 2.0 TDI, GTI..."
+          autocomplete="off" />
+      </div>
+
+      <!-- 4. Rok + Status -->
       <div class="row">
         <div class="field">
-          <label>Rok</label>
-          <input type="number" formControlName="year" />
+          <label>
+            Rok
+            @if (yearRange(); as r) {
+              <span class="year-hint">{{ r.minYear }} – {{ r.maxYear }}</span>
+            }
+          </label>
+          <input type="number" formControlName="productionYear"
+            [min]="yearRange()?.minYear ?? 1900"
+            [max]="yearRange()?.maxYear ?? 2026"
+            [placeholder]="yearRange() ? yearRange()!.minYear + ' – ' + yearRange()!.maxYear : 'Rok'" />
         </div>
 
         <div class="field">
           <label>Status</label>
           <select formControlName="status">
-            <option value="ACTIVE">Aktywny</option>
-            <option value="SOLD">Sprzedany</option>
+            <option [value]="CarStatus.W_NAPRAWIE">W naprawie</option>
+            <option [value]="CarStatus.GOTOWE">Gotowe</option>
+            <option [value]="CarStatus.WYSTAWIONE">Wystawione</option>
+            <option [value]="CarStatus.SPRZEDANE">Sprzedane</option>
           </select>
         </div>
       </div>
 
+      <!-- 5. Ceny -->
       <div class="row">
         <div class="field">
           <label>Cena zakupu</label>
           <input type="number" formControlName="purchasePrice" />
         </div>
-
         <div class="field">
           <label>Cena sprzedaży</label>
           <input type="number" formControlName="salePrice" />
         </div>
       </div>
 
+      <!-- 6. Zaproś użytkowników -->
+      <div class="row">
+        <div class="field">
+          <label>Zaproś użytkowników</label>
+          <div class="row">
+            <input type="email" [formControl]="emailControl" placeholder="email@przykład.pl" />
+            <button type="button" (click)="addUser()">Dodaj</button>
+          </div>
+        </div>
+        @if (usersToInvite.length) {
+          <div class="chips">
+            @for (user of usersToInvite.controls; track $index) {
+              <div class="user-chip">
+                {{ user.value }}
+                <button type="button" (click)="removeUser($index)">✕</button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
       <footer>
         <button type="button" (click)="closeModal()">Anuluj</button>
-
-        <button
-          type="submit"
-          class="primary"
-          [disabled]="submitting()"
-        >
-          @if (submitting()) {
-            Zapisywanie...
-          } @else {
-            Zapisz
-          }
+        <button type="submit" class="primary" [disabled]="submitting()">
+          {{ submitting() ? 'Zapisywanie...' : 'Zapisz' }}
         </button>
       </footer>
 
     </form>
   </div>
-
 </div>

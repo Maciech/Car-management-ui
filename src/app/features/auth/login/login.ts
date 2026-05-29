@@ -1,8 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, inject} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../auth-service';
 import {FormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
+import {tap, switchMap, of} from 'rxjs';
+import {InviteService} from '../../invite/invite-service';
 
 @Component({
   selector: 'app-login',
@@ -11,26 +13,28 @@ import {NgIf} from '@angular/common';
   styleUrl: './login.css'
 })
 export class Login {
+  private auth        = inject(AuthService);
+  private router      = inject(Router);
+  private route       = inject(ActivatedRoute);
+  private inviteService = inject(InviteService);
 
-  private auth = inject(AuthService);
-  private router = inject(Router);
+  email          = '';
+  password       = '';
+  error          = '';
+  isRegisterMode = false;
 
-  email: string = '';
-  password: string = '';
-  isRegisterMode: boolean = false;
+  toggleMode() { this.isRegisterMode = !this.isRegisterMode; }
 
   login() {
-    this.auth.login(this.email, this.password).subscribe();
-    this.router.navigate(['/dashboard']);
-  }
+    this.error = '';
+    const token = this.route.snapshot.queryParamMap.get('token');
 
-  register() {
-    console.log("test");
-    this.auth.register(this.email, this.password).subscribe();
-    this.router.navigate(['/dashboard']);
-  }
-
-  toggleMode() {
-    this.isRegisterMode = !this.isRegisterMode;
+    this.auth.login(this.email, this.password).pipe(
+      tap(jwt => localStorage.setItem('token', jwt)),
+      switchMap(() => token ? this.inviteService.acceptInvitation(token) : of(null))
+    ).subscribe({
+      next: () => this.router.navigate(['/dashboard']),
+      error: () => { this.error = 'Nieprawidłowy e-mail lub hasło.'; }
+    });
   }
 }

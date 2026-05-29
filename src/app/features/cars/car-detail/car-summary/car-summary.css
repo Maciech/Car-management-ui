@@ -1,5 +1,12 @@
+.summary-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: 16px;
+}
+
 .summary h1 {
-  margin: 0 0 16px 0;
+  margin: 0;
   font-size: 22px;
   font-weight: 600;
   color: var(--text-main);

@@ -1,22 +1,27 @@
 <nav class="sidebar" [class.expanded]="expanded()">
 
-  <!-- HAMBURGER -->
-  <button class="hamburger" (click)="toggle()">
-    ☰
+  <button class="hamburger" (click)="toggle()">☰</button>
+
+  <div class="nav-links">
+    @for (item of navItems; track item.route) {
+      <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <span class="icon">{{ item.icon }}</span>
+        @if (expanded()) {
+          <span class="label">{{ item.label }}</span>
+        }
+      </a>
+    }
+  </div>
+
+  <button class="search-btn" (click)="openSearch()">
+    <span class="search-icon">🔍</span>
+    @if (expanded()) {
+      <span class="label">Szukaj</span>
+    }
   </button>
 
-  <!-- NAV -->
-  @for (item of navItems; track item.route) {
-    <a
-      [routerLink]="item.route"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <span class="icon">{{ item.icon }}</span>
-
-      @if (expanded()) {
-        <span class="label">{{ item.label }}</span>
-      }
-    </a>
-  }
 </nav>
+
+@if (showSearch()) {
+  <app-car-search-modal (close)="closeSearch()" />
+}

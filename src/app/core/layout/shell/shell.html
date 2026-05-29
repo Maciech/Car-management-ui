@@ -1,18 +1,12 @@
-@if (auth.isLoggedIn()) {
-  <div class="layout">
-    <app-sidebar />
+<div class="layout" [class.sidebar-expanded]="layout.sidebarExpanded()">
+  <app-sidebar />
 
-    <div class="content">
-      <app-topbar />
-      <main>
-        <router-outlet />
-      </main>
-    </div>
-
-    <app-toast-component />
-
+  <div class="content">
+    <app-topbar />
+    <main>
+      <router-outlet />
+    </main>
   </div>
-}
 
-<router-outlet />
-
+  <app-toast-component />
+</div>
