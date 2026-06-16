@@ -13,17 +13,10 @@ export class ImageService {
   private readonly HOST_URL = environment.apiUrl;
   private http = inject(HttpClient);
 
-  upload(carId: number, images: { file: File }[]): Observable<ImageModel[]> {
+  upload(carId: number, images: { file: File }[]): Observable<void> {
     const form = new FormData();
-
-    images.forEach(img => {
-      form.append('files', img.file);
-    });
-
-    return this.http.post<ImageModel[]>(
-      this.HOST_URL + this.API + `/images/${carId}`,
-      form
-    );
+    images.forEach(img => form.append('files', img.file));
+    return this.http.post<void>(this.HOST_URL + this.API + `/images/${carId}`, form);
   }
 
   getImagesByCarId(carId: number): Observable<ImageModel[]> {

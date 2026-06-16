@@ -27,7 +27,7 @@
       </div>
       <div class="info-item">
         <span class="info-label">Moc</span>
-        <strong class="info-value">{{ car.kwPower ? car.kwPower + ' kW' : '—' }}</strong>
+        <strong class="info-value">{{ car.kWPower ? car.kWPower + ' kW' : '—' }}</strong>
       </div>
       <div class="info-item">
         <span class="info-label">Pojemność silnika</span>
@@ -117,7 +117,7 @@
         </div>
         <div class="field">
           <label>Moc (kW)</label>
-          <input type="number" formControlName="kwPower" min="0" />
+          <input type="number" formControlName="kWPower" min="0" />
         </div>
         <div class="field">
           <label>Pojemność (cm³)</label>
@@ -129,7 +129,7 @@
       <div class="form-row three">
         <div class="field">
           <label>Kolor</label>
-          <select formControlName="carColor">
+          <select formControlName="color">
             @for (c of colorOptions; track c.value) {
               <option [value]="c.value">{{ c.label }}</option>
             }

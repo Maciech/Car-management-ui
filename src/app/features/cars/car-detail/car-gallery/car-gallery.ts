@@ -57,19 +57,19 @@ export class CarGallery implements OnInit {
     if (!this.uploadImages().length) return;
     this.uploading.set(true);
 
-    this.imageService
-      .upload(this.carId, this.uploadImages())
-      .subscribe({
-        next: images => {
-          this.images.set(images);
-          this.uploadImages.set([]);
-          this.uploading.set(false);
-          this.changed.emit();
-        },
-        error: () => {
-          this.uploading.set(false);
-        },
-      });
+    this.imageService.upload(this.carId, this.uploadImages()).subscribe({
+      next: () => {
+        this.imageService.getImagesByCarId(this.carId).subscribe({
+          next: imgs => this.images.set(imgs),
+        });
+        this.uploadImages.set([]);
+        this.uploading.set(false);
+        this.changed.emit();
+      },
+      error: () => {
+        this.uploading.set(false);
+      },
+    });
   }
 
   open(img: string) {

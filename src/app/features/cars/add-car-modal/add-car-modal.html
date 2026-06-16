@@ -17,12 +17,16 @@
           <label>Marka <span class="req">*</span></label>
           <input type="text" list="ac-makes" formControlName="brand"
             placeholder="np. BMW, Audi, Toyota..."
-            (change)="onBrandChange($event)" autocomplete="off" />
+            (change)="onBrandChange($event)" autocomplete="off"
+            [class.invalid]="form.get('brand')?.invalid && form.get('brand')?.touched" />
           <datalist id="ac-makes">
             @for (m of carService.makes(); track m) {
               <option [value]="m"></option>
             }
           </datalist>
+          @if (form.get('brand')?.invalid && form.get('brand')?.touched) {
+            <span class="field-error">Marka jest wymagana</span>
+          }
         </div>
 
         <!-- Generacja / Model -->
@@ -45,8 +49,11 @@
           <div class="field">
             <label>Wariant / Model <span class="req">*</span></label>
             <input type="text" formControlName="model"
-              placeholder="np. 320d, M3, 2.0 TDI..."
-              autocomplete="off" />
+              placeholder="np. 320d, M3, 2.0 TDI..." autocomplete="off"
+              [class.invalid]="form.get('model')?.invalid && form.get('model')?.touched" />
+            @if (form.get('model')?.invalid && form.get('model')?.touched) {
+              <span class="field-error">Model jest wymagany</span>
+            }
           </div>
         </div>
 
@@ -62,14 +69,23 @@
             <input type="number" formControlName="productionYear"
               [min]="yearRange()?.minYear ?? 1900"
               [max]="yearRange()?.maxYear ?? 2030"
-              [placeholder]="yearRange() ? yearRange()!.minYear + ' – ' + yearRange()!.maxYear : 'Rok'" />
+              [placeholder]="yearRange() ? yearRange()!.minYear + ' – ' + yearRange()!.maxYear : 'Rok'"
+              [class.invalid]="form.get('productionYear')?.invalid && form.get('productionYear')?.touched" />
+            @if (form.get('productionYear')?.invalid && form.get('productionYear')?.touched) {
+              <span class="field-error">Rok musi być ≥ 1900</span>
+            }
           </div>
 
           <div class="field">
-            <label>Numer VIN
-              <span class="req">*</span></label>
+            <label>Numer VIN <span class="req">*</span>
+              <span class="field-hint">17 znaków A–Z, 0–9</span></label>
             <input type="text" formControlName="vinNumber"
-              placeholder="wymagany" maxlength="17" autocomplete="off" />
+              placeholder="np. WBA3A5C50DF123456" maxlength="17" autocomplete="off"
+              (input)="onVinInput($event)"
+              [class.invalid]="form.get('vinNumber')?.invalid && form.get('vinNumber')?.touched" />
+            @if (form.get('vinNumber')?.invalid && form.get('vinNumber')?.touched) {
+              <span class="field-error">VIN musi mieć dokładnie 17 znaków (A–Z bez I/O/Q, cyfry)</span>
+            }
           </div>
         </div>
 
@@ -80,23 +96,41 @@
         <div class="row">
           <div class="field">
             <label>Przebieg (km) <span class="req">*</span></label>
-            <input type="number" formControlName="mileage" placeholder="0" min="0" />
+            <input type="number" formControlName="mileage" placeholder="" min="0"
+              [class.invalid]="form.get('mileage')?.invalid && form.get('mileage')?.touched" />
+            @if (form.get('mileage')?.errors?.['required'] && form.get('mileage')?.touched) {
+              <span class="field-error">Przebieg jest wymagany</span>
+            } @else if (form.get('mileage')?.errors?.['min'] && form.get('mileage')?.touched) {
+              <span class="field-error">Przebieg nie może być ujemny</span>
+            }
           </div>
           <div class="field">
-            <label>Moc (kW)</label>
-            <input type="number" formControlName="kwPower" placeholder="0" min="0" />
+            <label>Moc (kW) <span class="req">*</span></label>
+            <input type="number" formControlName="kWPower" placeholder="" min="0"
+              [class.invalid]="form.get('kWPower')?.invalid && form.get('kWPower')?.touched" />
+            @if (form.get('kWPower')?.errors?.['required'] && form.get('kWPower')?.touched) {
+              <span class="field-error">Moc jest wymagana</span>
+            } @else if (form.get('kWPower')?.errors?.['min'] && form.get('kWPower')?.touched) {
+              <span class="field-error">Moc nie może być ujemna</span>
+            }
           </div>
         </div>
 
         <!-- Pojemność + Kolor -->
         <div class="row">
           <div class="field">
-            <label>Pojemność silnika (cm³)</label>
-            <input type="number" formControlName="engineCapacity" placeholder="np. 1998" min="0" />
+            <label>Pojemność silnika (cm³) <span class="req">*</span></label>
+            <input type="number" formControlName="engineCapacity" placeholder="" min="0"
+              [class.invalid]="form.get('engineCapacity')?.invalid && form.get('engineCapacity')?.touched" />
+            @if (form.get('engineCapacity')?.errors?.['required'] && form.get('engineCapacity')?.touched) {
+              <span class="field-error">Pojemność silnika jest wymagana</span>
+            } @else if (form.get('engineCapacity')?.errors?.['min'] && form.get('engineCapacity')?.touched) {
+              <span class="field-error">Pojemność nie może być ujemna</span>
+            }
           </div>
           <div class="field">
             <label>Kolor <span class="req">*</span></label>
-            <select formControlName="carColor">
+            <select formControlName="color">
               @for (c of colorOptions; track c.value) {
                 <option [value]="c.value">{{ c.label }}</option>
               }
@@ -111,7 +145,11 @@
         <div class="row">
           <div class="field">
             <label>Liczba poprzednich właścicieli <span class="req">*</span></label>
-            <input type="number" formControlName="numberOfPreviousOwners" placeholder="0" min="0" />
+            <input type="number" formControlName="numberOfPreviousOwners" placeholder="0" min="0"
+              [class.invalid]="form.get('numberOfPreviousOwners')?.invalid && form.get('numberOfPreviousOwners')?.touched" />
+            @if (form.get('numberOfPreviousOwners')?.invalid && form.get('numberOfPreviousOwners')?.touched) {
+              <span class="field-error">Wartość musi być ≥ 0</span>
+            }
           </div>
           <div class="field">
             <label>Status <span class="req">*</span></label>
@@ -142,7 +180,13 @@
         <div class="row">
           <div class="field">
             <label>Cena zakupu (zł) <span class="req">*</span></label>
-            <input type="number" formControlName="purchasePrice" placeholder="0" min="0" />
+            <input type="number" formControlName="purchasePrice" placeholder="" min="0"
+              [class.invalid]="form.get('purchasePrice')?.invalid && form.get('purchasePrice')?.touched" />
+            @if (form.get('purchasePrice')?.errors?.['required'] && form.get('purchasePrice')?.touched) {
+              <span class="field-error">Cena zakupu jest wymagana</span>
+            } @else if (form.get('purchasePrice')?.errors?.['min'] && form.get('purchasePrice')?.touched) {
+              <span class="field-error">Cena nie może być ujemna</span>
+            }
           </div>
           <div class="field">
             <label>Cena sprzedaży (zł)</label>
@@ -159,8 +203,52 @@
             placeholder="Dodatkowe informacje o samochodzie..."></textarea>
         </div>
 
+        <!-- ═══ ZDJĘCIA ═══ -->
+        <div class="section-divider"><span>Zdjęcia</span></div>
+
+        <div class="image-picker">
+          <label class="image-upload-btn">
+            📷 Dodaj zdjęcia
+            <input type="file" accept="image/*" multiple (change)="onFilesSelected($event)" hidden />
+          </label>
+          @if (pendingFiles().length) {
+            <div class="image-previews">
+              @for (file of pendingFiles(); track file.name; let i = $index) {
+                <div class="preview-item">
+                  <img [src]="previewUrl(file)" [alt]="file.name" />
+                  <button type="button" class="remove-preview" (click)="removeFile(i)">✕</button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- ═══ ZAŁĄCZNIKI ═══ -->
+        <div class="section-divider"><span>Załączniki</span></div>
+
+        <div class="attachment-picker">
+          <label class="image-upload-btn">
+            📎 Dodaj pliki
+            <input type="file"
+              accept=".pdf,.xls,.xlsx,.doc,.docx,.txt,.csv,.ods,.odt"
+              multiple (change)="onAttachmentsSelected($event)" hidden />
+          </label>
+          @if (pendingAttachments().length) {
+            <ul class="attachment-list">
+              @for (file of pendingAttachments(); track file.name; let i = $index) {
+                <li class="attachment-item">
+                  <span class="attachment-icon">{{ attachmentIcon(file) }}</span>
+                  <span class="attachment-name">{{ file.name }}</span>
+                  <span class="attachment-size">{{ (file.size / 1024).toFixed(0) }} KB</span>
+                  <button type="button" class="remove-attachment" (click)="removeAttachment(i)">✕</button>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+
         <!-- ═══ ZAPROŚ UŻYTKOWNIKÓW ═══ -->
-        <div class="section-divider"><span>Zaproś do auta</span></div>
+        <div class="section-divider"><span>Zaproś do portfela</span></div>
 
         <div class="field">
           <label>Email użytkownika</label>
@@ -184,6 +272,9 @@
       </div><!-- /modal-body -->
 
       <footer>
+        @if (form.invalid && form.touched) {
+          <span class="footer-error">Uzupełnij wymagane pola przed zapisem</span>
+        }
         <button type="button" (click)="closeModal()">Anuluj</button>
         <button type="submit" class="primary" [disabled]="submitting()">
           {{ submitting() ? 'Zapisywanie...' : '💾 Zapisz auto' }}

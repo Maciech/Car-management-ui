@@ -1,7 +1,43 @@
 <header class="topbar">
-  <div class="left"></div>
+  <div class="left">
+    @if (title()) {
+      <h1 class="title">{{ title() }}</h1>
+    }
+  </div>
 
-  <h1 class="title">{{ title() }}</h1>
+  <div class="right">
 
-  <div class="right"></div>
+    <!-- Theme toggle -->
+    <button class="topbar-icon-btn" (click)="theme.toggle()" title="Zmień motyw">
+      {{ theme.isDark() ? '☀️' : '🌙' }}
+    </button>
+
+    <!-- Profile area -->
+    <div class="profile-area">
+      <button class="avatar-btn" (click)="toggleMenu()" [class.active]="menuOpen()">
+        {{ userInitials }}
+      </button>
+
+      @if (menuOpen()) {
+        <div class="profile-dropdown">
+          <div class="dropdown-email">{{ userEmail }}</div>
+          <hr class="dropdown-sep" />
+          <a class="dropdown-item" routerLink="/profile" (click)="menuOpen.set(false)">
+            👤 Profil
+          </a>
+          <a class="dropdown-item" routerLink="/dashboard" (click)="menuOpen.set(false)">
+            🚗 Moje auta
+          </a>
+          <a class="dropdown-item" routerLink="/" (click)="menuOpen.set(false)">
+            🏪 Giełda
+          </a>
+          <hr class="dropdown-sep" />
+          <button class="dropdown-item danger" (click)="logout()">
+            🚪 Wyloguj
+          </button>
+        </div>
+      }
+    </div>
+
+  </div>
 </header>

@@ -3,6 +3,7 @@
 :host {
   display: block;
   cursor: pointer;
+  position: relative;
 }
 
 .car-card {
@@ -165,6 +166,14 @@
   color: var(--primary-accent);
 }
 
+/* Zysk */
+.info-row.profit strong {
+  color: #22c55e;
+}
+.info-row.profit-neg strong {
+  color: var(--error);
+}
+
 /* Separator line */
 .info::before {
   content: '';
@@ -173,3 +182,146 @@
   background: var(--border-color);
   margin-bottom: 2px;
 }
+
+/* ── Actions button (⋮) ── */
+.actions-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  transition: background 0.15s;
+}
+.actions-btn:hover { background: rgba(0,0,0,0.85); }
+
+/* ── Actions dropdown ── */
+.actions-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+}
+
+.actions-dropdown {
+  position: absolute;
+  top: 42px;
+  right: 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  min-width: 190px;
+  z-index: 201;
+  overflow: hidden;
+}
+
+.actions-header {
+  padding: 8px 14px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 14px;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.13s;
+}
+.action-item:hover    { background: var(--card-bg-darker); }
+.action-item.active   { color: var(--primary-accent); font-weight: 600; }
+.action-item.danger   { color: var(--error); }
+.action-item.danger:hover { background: rgba(239,68,68,0.08); }
+
+.actions-sep {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 4px 0;
+}
+
+/* ── Confirm overlay ── */
+.confirm-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 202;
+  border-radius: inherit;
+}
+
+.confirm-box {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  width: 85%;
+  box-shadow: var(--shadow-xl);
+}
+
+.confirm-text {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.confirm-cancel,
+.confirm-ok {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+}
+
+.confirm-cancel {
+  background: var(--card-bg-darker);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+.confirm-cancel:hover { color: var(--text-main); }
+
+.confirm-ok {
+  background: var(--primary-accent);
+  color: #fff;
+}
+.confirm-ok:hover:not(:disabled) { background: var(--primary-accent-dark); }
+.confirm-ok.danger { background: var(--error); }
+.confirm-ok.danger:hover:not(:disabled) { background: #dc2626; }
+.confirm-ok:disabled { opacity: 0.5; cursor: not-allowed; }

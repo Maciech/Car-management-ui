@@ -1,0 +1,198 @@
+<!-- ══ Public click-catcher for closing the profile menu ══ -->
+@if (menuOpen()) {
+  <div class="menu-backdrop" (click)="closeMenu()"></div>
+}
+
+<div class="marketplace-page" [attr.data-theme]="theme.theme()">
+
+  <!-- ══ HEADER ══ -->
+  <header class="mkt-header">
+    <div class="mkt-brand">
+      <span class="mkt-logo">🚗</span>
+      <span class="mkt-name">AutoFleet</span>
+      <span class="mkt-tagline">Giełda samochodów</span>
+    </div>
+
+    <nav class="mkt-nav">
+      @if (!auth.isLoggedIn()) {
+        <a class="mkt-login-btn" routerLink="/login">Zaloguj się</a>
+        <a class="mkt-register-btn" routerLink="/register">Zarejestruj</a>
+      } @else {
+        <button class="mkt-avatar" (click)="toggleMenu()">
+          {{ userInitials }}
+        </button>
+        @if (menuOpen()) {
+          <div class="mkt-dropdown">
+            <div class="mkt-dropdown-email">{{ userEmail }}</div>
+            <hr class="mkt-dropdown-sep" />
+            <button class="mkt-dropdown-item" (click)="goToDashboard(); closeMenu()">
+              🚗 Moje auta
+            </button>
+            <button class="mkt-dropdown-item" (click)="goToProfile(); closeMenu()">
+              👤 Profil
+            </button>
+            <hr class="mkt-dropdown-sep" />
+            <button class="mkt-dropdown-item danger" (click)="logout()">
+              🚪 Wyloguj
+            </button>
+          </div>
+        }
+      }
+
+      <button class="mkt-theme-btn" (click)="theme.toggle()" title="Zmień motyw">
+        {{ theme.isDark() ? '☀️' : '🌙' }}
+      </button>
+    </nav>
+  </header>
+
+  <!-- ══ HERO ══ -->
+  <section class="mkt-hero">
+    <h1 class="hero-title">Znajdź swój wymarzony samochód</h1>
+    <p class="hero-sub">Przeglądaj oferty sprawdzonych dealerów</p>
+  </section>
+
+  <!-- ══ MAIN CONTENT ══ -->
+  <div class="mkt-content">
+
+    <!-- Filtry -->
+    <aside class="mkt-filters">
+      <h2 class="filters-title">Filtruj oferty</h2>
+
+      <form [formGroup]="form" (ngSubmit)="search()" class="filter-form">
+
+        <div class="filter-group">
+          <label>Marka</label>
+          <input type="text" list="mkt-makes" formControlName="brand"
+            placeholder="np. BMW, Toyota..."
+            (change)="onBrandChange($event)" autocomplete="off" />
+          <datalist id="mkt-makes">
+            @for (m of carService.makes(); track m) { <option [value]="m"></option> }
+          </datalist>
+        </div>
+
+        <div class="filter-group">
+          <label>Generacja</label>
+          <input type="text" list="mkt-gens" formControlName="generation"
+            placeholder="{{ generationOptions().length ? 'np. F30, E46...' : 'Najpierw wybierz markę' }}"
+            (change)="onGenerationChange($event)" autocomplete="off" />
+          <datalist id="mkt-gens">
+            @for (g of generationOptions(); track g.code) {
+              <option [value]="g.code">{{ g.label }}</option>
+            }
+          </datalist>
+        </div>
+
+        <div class="filter-group">
+          <label>Wariant / model</label>
+          <input type="text" formControlName="model" placeholder="np. 320d, M3..." autocomplete="off" />
+        </div>
+
+        <div class="filter-group">
+          <label>
+            Rok produkcji
+            @if (yearRange(); as r) { <span class="range-hint">{{ r.minYear }} – {{ r.maxYear }}</span> }
+          </label>
+          <div class="range-row">
+            <input type="number" formControlName="minYear"
+              [min]="yearRange()?.minYear ?? 1900" [max]="yearRange()?.maxYear ?? 2030"
+              [placeholder]="yearRange() ? yearRange()!.minYear : 'Od'" />
+            <span>–</span>
+            <input type="number" formControlName="maxYear"
+              [min]="yearRange()?.minYear ?? 1900" [max]="yearRange()?.maxYear ?? 2030"
+              [placeholder]="yearRange() ? yearRange()!.maxYear : 'Do'" />
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Cena (zł)</label>
+          <div class="range-row">
+            <input type="number" formControlName="minPrice" placeholder="Od" />
+            <span>–</span>
+            <input type="number" formControlName="maxPrice" placeholder="Do" />
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Przebieg (km)</label>
+          <div class="range-row">
+            <input type="number" formControlName="minMileage" placeholder="Od" />
+            <span>–</span>
+            <input type="number" formControlName="maxMileage" placeholder="Do" />
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Moc (kW)</label>
+          <div class="range-row">
+            <input type="number" formControlName="minPower" placeholder="Od" />
+            <span>–</span>
+            <input type="number" formControlName="maxPower" placeholder="Do" />
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Kolor</label>
+          <select formControlName="color">
+            <option value="">Dowolny</option>
+            @for (c of colorOptions; track c.value) {
+              <option [value]="c.value">{{ c.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button type="button" class="btn-reset" (click)="reset()">Wyczyść</button>
+          <button type="submit" class="btn-search" [disabled]="loading()">
+            {{ loading() ? 'Szukam...' : 'Szukaj' }}
+          </button>
+        </div>
+
+      </form>
+    </aside>
+
+    <!-- Wyniki -->
+    <div class="mkt-results">
+
+      <div class="results-bar">
+        @if (loading()) {
+          <span class="results-count">Wyszukiwanie...</span>
+        } @else {
+          <span class="results-count">
+            Znaleziono <strong>{{ results().length }}</strong>
+            {{ results().length === 1 ? 'ofertę' : 'ofert' }}
+          </span>
+        }
+      </div>
+
+      @if (loading()) {
+        <div class="mkt-loading">
+          <div class="spinner"></div>
+        </div>
+      } @else if (results().length === 0) {
+        <div class="mkt-empty">
+          <span class="empty-icon">🔍</span>
+          <p>Brak ofert dla podanych kryteriów</p>
+          <button class="btn-reset" (click)="reset()">Wyczyść filtry</button>
+        </div>
+      } @else {
+        <div class="results-grid">
+          @for (car of results(); track car.carId) {
+            <app-car-card [car]="car" />
+          }
+        </div>
+      }
+
+    </div>
+
+  </div>
+
+  <footer class="mkt-footer">
+    <span>© 2025 AutoFleet</span>
+    @if (!auth.isLoggedIn()) {
+      <a routerLink="/login">Panel dealera →</a>
+    } @else {
+      <a routerLink="/dashboard">Moje auta →</a>
+    }
+  </footer>
+
+</div>

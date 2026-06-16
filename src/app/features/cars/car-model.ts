@@ -8,11 +8,11 @@ export interface Car {
   model: string;
   generation?: string;
 
-  carColor: CarColor;
+  color: CarColor;
   productionYear: number;
   vinNumber: string;
   mileage: number;
-  kwPower: number;
+  kWPower: number;
   engineCapacity: number;
 
   isImported?: boolean;
@@ -26,4 +26,5 @@ export interface Car {
 
   status?: CarStatus;
   images: string[];
+  totalExpenses?: number;
 }

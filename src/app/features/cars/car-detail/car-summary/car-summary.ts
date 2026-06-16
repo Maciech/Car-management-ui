@@ -40,9 +40,9 @@ export class CarSummary implements OnChanges {
     model:                  ['', Validators.required],
     productionYear:         [2020, [Validators.required, Validators.min(1900)]],
     mileage:                [0,   [Validators.required, Validators.min(0)]],
-    kwPower:                [0,   [Validators.min(0)]],
+    kWPower:                [0,   [Validators.min(0)]],
     engineCapacity:         [0,   [Validators.min(0)]],
-    carColor:               [CarColor.WHITE, Validators.required],
+    color:               [CarColor.WHITE, Validators.required],
     vinNumber:              [''],
     numberOfPreviousOwners: [0,   [Validators.required, Validators.min(0)]],
     description:            [''],
@@ -63,7 +63,7 @@ export class CarSummary implements OnChanges {
     return CAR_STATUS_CSS[s];
   }
   get colorLabel() {
-    return this.car.carColor ? CAR_COLOR_LABELS[this.car.carColor] : '—';
+    return this.car.color ? CAR_COLOR_LABELS[this.car.color] : '—';
   }
 
   // ── Sync form when car input changes ──────────────────────────────────────
@@ -78,9 +78,9 @@ export class CarSummary implements OnChanges {
       model:                  this.car.model,
       productionYear:         this.car.productionYear,
       mileage:                this.car.mileage,
-      kwPower:                this.car.kwPower,
+      kWPower:                this.car.kWPower,
       engineCapacity:         this.car.engineCapacity ?? 0,
-      carColor:               this.car.carColor ?? CarColor.WHITE,
+      color:               this.car.color ?? CarColor.WHITE,
       vinNumber:              this.car.vinNumber ?? '',
       numberOfPreviousOwners: this.car.numberOfPreviousOwners ?? 0,
       description:            this.car.description ?? '',
@@ -112,9 +112,9 @@ export class CarSummary implements OnChanges {
       model:                  v.model,
       productionYear:         v.productionYear,
       mileage:                v.mileage,
-      kwPower:                v.kwPower,
+      kWPower:                v.kWPower,
       engineCapacity:         v.engineCapacity,
-      carColor:               v.carColor,
+      color:               v.color,
       vinNumber:              v.vinNumber || null,
       numberOfPreviousOwners: v.numberOfPreviousOwners,
       description:            v.description || null,

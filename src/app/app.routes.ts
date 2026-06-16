@@ -8,22 +8,25 @@ import {Dashboard} from './features/dashboard/dashboard';
 import {Profile} from './features/profile/profile';
 import {RegisterComponent} from './features/auth/register/register.component/register.component';
 import {InvitePage} from './features/invite/invite-page';
+import {Marketplace} from './features/marketplace/marketplace';
 
 export const routes: Routes = [
-  {path: 'login', component: Login},
+  // ── Public routes (no auth required) ──────────────────────────────────────
+  {path: '', component: Marketplace, pathMatch: 'full'},
+  {path: 'login',    component: Login},
   {path: 'register', component: RegisterComponent},
-  {path: 'invite', component: InvitePage},   // public
+  {path: 'invite',   component: InvitePage},
 
+  // ── Authenticated shell ────────────────────────────────────────────────────
   {
     path: '',
     component: Shell,
     canActivate: [authGuard],
     children: [
-      {path: 'dashboard', component: Dashboard},
-      {path: 'profile', component: Profile},
-      {path: 'cars', component: CarsList},
-      {path: 'cars/:id', component: CarDetail, data: {title: 'Szczegóły samochodu'}},
-      {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+      {path: 'dashboard',  component: Dashboard},
+      {path: 'profile',    component: Profile},
+      {path: 'cars',       component: CarsList},
+      {path: 'cars/:id',   component: CarDetail, data: {title: 'Szczegóły samochodu'}},
     ]
   }
 ];

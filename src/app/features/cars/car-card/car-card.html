@@ -12,7 +12,6 @@
     @if (hasMultiple) {
       <button class="nav-btn prev" (click)="prev($event)" aria-label="Poprzednie">&#8249;</button>
       <button class="nav-btn next" (click)="next($event)" aria-label="Następne">&#8250;</button>
-
       <div class="dots">
         @for (img of images(); track img.imageId; let i = $index) {
           <span class="dot" [class.active]="i === currentIndex()"></span>
@@ -21,6 +20,11 @@
     }
 
     <span class="status-badge image-badge" [class]="statusCss">{{ statusLabel }}</span>
+
+    <!-- ── Actions button (only when showActions=true) ── -->
+    @if (showActions) {
+      <button class="actions-btn" (click)="toggleActions($event)" title="Akcje">⋮</button>
+    }
   </div>
 
   <div class="card-body">
@@ -40,8 +44,49 @@
           <span>Cena sprzedaży</span>
           <strong>{{ car.salePrice | number:'1.0-0' }} zł</strong>
         </div>
+        @if (car.purchasePrice) {
+          <div class="info-row profit" [class.profit-neg]="car.salePrice! - car.purchasePrice! - (car.totalExpenses ?? 0) < 0">
+            <span>Zysk</span>
+            <strong>{{ car.salePrice! - car.purchasePrice! - (car.totalExpenses ?? 0) | number:'1.0-0' }} zł</strong>
+          </div>
+        }
       }
     </div>
   </div>
 
 </div>
+
+<!-- ── Actions dropdown ── -->
+@if (showActions && actionsOpen()) {
+  <div class="actions-backdrop" (click)="closeActions()"></div>
+  <div class="actions-dropdown" (click)="$event.stopPropagation()">
+    <div class="actions-header">Zmień status</div>
+    @for (opt of statusOptions; track opt.value) {
+      <button class="action-item"
+        [class.active]="car.status === opt.value"
+        (click)="requestStatus(opt.value, $event)">
+        {{ opt.label }}
+      </button>
+    }
+    <hr class="actions-sep" />
+    <button class="action-item danger" (click)="requestDelete($event)">🗑️ Usuń samochód</button>
+  </div>
+}
+
+<!-- ── Confirm overlay ── -->
+@if (showActions && confirmType()) {
+  <div class="confirm-overlay" (click)="cancelConfirm($event)">
+    <div class="confirm-box" (click)="$event.stopPropagation()">
+      <p class="confirm-text">{{ confirmLabel }}</p>
+      <div class="confirm-actions">
+        <button class="confirm-cancel" (click)="cancelConfirm($event)">Anuluj</button>
+        <button class="confirm-ok"
+          [class.danger]="confirmType() === 'delete'"
+          [disabled]="busy()"
+          (click)="confirm($event)">
+          {{ busy() ? '...' : (confirmType() === 'delete' ? 'Usuń' : 'Tak, zmień') }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

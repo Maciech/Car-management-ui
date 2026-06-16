@@ -13,41 +13,50 @@ import {CarCard} from '../cars/car-card/car-card';
   styleUrl: './dashboard.css',
 })
 export class Dashboard {
+  private carService = inject(CarService);
+  private router     = inject(Router);
 
   showAddCar = signal(false);
+  cars       = signal<Car[]>([]);
 
-  cars = signal<Car[]>([]);
+  constructor() { this.load(); }
 
-  private router = inject(Router);
-
-  constructor(private carService: CarService) {
+  load() {
     this.carService.getAll().subscribe({
-      next: (cars) => {
-        this.cars.set(cars);
-      },
-      error: () => {
-        // Obsługa błędu ładowania samochodów
-        this.cars.set([]);
-      },
+      next: cars => this.cars.set(cars),
+      error: ()  => this.cars.set([]),
     });
   }
 
-  activeCars() {
-    return this.cars().filter(c => !c.isSold).slice(0, 3);
+  listedCars() {
+    return this.cars()
+      .filter(c => c.status === 'WYSTAWIONE')
+      .slice(0, 3);
   }
 
-  soldCars() {
-    return this.cars().filter(c => c.isSold).slice(0, 3);
+  bestSoldCars() {
+    return this.cars()
+      .filter(c => c.status === 'SPRZEDANE' && c.salePrice && c.purchasePrice)
+      .sort((a, b) => {
+        const invested = (c: typeof a) => c.purchasePrice! + (c.totalExpenses ?? 0);
+        const marginA = (a.salePrice! - invested(a)) / invested(a);
+        const marginB = (b.salePrice! - invested(b)) / invested(b);
+        return marginB - marginA;
+      })
+      .slice(0, 3);
   }
 
-  openAddCar() { this.showAddCar.set(true); }
+  readyCars() {
+    return this.cars()
+      .filter(c => c.status === 'GOTOWE')
+      .slice(0, 3);
+  }
+
+  openAddCar()  { this.showAddCar.set(true); }
   closeAddCar() { this.showAddCar.set(false); }
+  onCarAdded()  { this.showAddCar.set(false); this.load(); }
 
-  showAllActive() {
-    this.router.navigate(['/cars'], {queryParams: {status: 'AKTYWNE'}});
-  }
-
-  showAllSold() {
-    this.router.navigate(['/cars'], {queryParams: {status: 'SPRZEDANE'}});
-  }
+  showAllListed() { this.router.navigate(['/cars'], {queryParams: {status: 'WYSTAWIONE'}}); }
+  showAllSold()   { this.router.navigate(['/cars'], {queryParams: {status: 'SPRZEDANE'}}); }
+  showAllReady()  { this.router.navigate(['/cars'], {queryParams: {status: 'GOTOWE'}}); }
 }
