@@ -1,118 +1,155 @@
+/* ══ Portfolio Statistics ══ */
+
 .stats {
   background: var(--card-bg);
-  padding: var(--spacing-lg);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  color: var(--text-main);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
 }
 
+/* ── Header bar ── */
 .stats header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(249, 115, 22, 0.04);
 }
 
 .stats header h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--text-main);
-}
-
-.ranges {
-  display: flex;
-  gap: var(--spacing-sm);
-}
-
-.ranges button {
-  padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: var(--radius-sm);
-  border: none;
-  background: transparent;
   color: var(--text-muted);
-  cursor: pointer;
-  font-size: 13px;
-  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
-.ranges button:hover {
-  background: rgba(255, 255, 255, 0.06);
+/* ── Body ── */
+.stats-body {
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+/* ── Counters row ── */
+.counters {
+  display: flex;
+  gap: 0;
+  background: var(--card-bg-darker);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.counter {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 18px var(--spacing-md);
+  position: relative;
+}
+
+.counter:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: var(--border-color);
+}
+
+.counter span {
+  font-size: 28px;
+  font-weight: 700;
   color: var(--text-main);
+  line-height: 1;
 }
 
-.ranges button.active {
-  background: var(--sidebar-bg);
-  color: var(--text-main);
-  font-weight: 600;
+.counter:first-child span {
+  color: var(--primary-accent);
 }
 
+.counter label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+/* ── KPIs grid ── */
 .kpis {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-lg);
-  margin-top: var(--spacing-lg);
+  gap: 1px;
+  background: var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
 }
 
 .kpi {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  gap: 6px;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background: var(--card-bg-darker);
 }
 
 .kpi span {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--text-muted);
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .kpi strong {
   display: block;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-main);
-}
-
-.kpi strong.profit {
-  color: var(--success);
-}
-
-.counters {
-  display: flex;
-  gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-lg);
-}
-
-.counter {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.counter span {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-main);
 }
 
-.counter label {
-  font-size: 12px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.kpi strong.profit { color: var(--success); }
+.kpi strong.loss   { color: var(--error); }
+
+/* ── Range buttons ── */
+.ranges {
+  display: flex;
+  gap: var(--spacing-xs);
 }
 
-.kpi strong.profit,
-.kpi strong.loss {
-  display: block;
-  font-size: 20px;
+.ranges button {
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.ranges button:hover {
+  color: var(--text-main);
+  background: rgba(255,255,255,0.05);
+}
+.ranges button.active {
+  background: var(--primary-accent-glow);
+  color: var(--primary-accent);
+  border-color: var(--primary-accent-border);
   font-weight: 600;
 }
 
-.kpi strong.profit {
-  color: var(--success);
-}
-
-.kpi strong.loss {
-  color: var(--error, #e57373);
+@media (max-width: 768px) {
+  .kpis { grid-template-columns: 1fr; }
+  .counters { flex-wrap: wrap; }
 }

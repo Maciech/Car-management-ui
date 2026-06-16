@@ -2,43 +2,47 @@
 
 <div class="panel">
 
-  <h3>Dodaj koszt</h3>
+  <div class="panel-header">
+    <h3>➕ Dodaj koszt</h3>
+  </div>
 
-  <label>
-    Opis
-    <input [(ngModel)]="description" />
-  </label>
+  <div class="panel-body">
 
-  <label>
-    Kwota
-    <input type="number" [(ngModel)]="amount" />
-  </label>
+    <div>
+      <label>Opis</label>
+      <input [(ngModel)]="description" placeholder="np. wymiana oleju, lakierowanie..." />
+    </div>
 
-  <label>
-    Typ
-    <select [(ngModel)]="type" name="type" required>
-      <option value="" disabled selected>Wybierz typ wydatku</option>
-      @for (expenseType of expenseTypes; track expenseType) {
-        <option [value]="expenseType">
-          {{ expenseType }}
-        </option>
-      }
-    </select>
-  </label>
+    <div>
+      <label>Kwota (zł)</label>
+      <input type="number" [(ngModel)]="amount" placeholder="0.00" />
+    </div>
 
-  <label>
-    Płatnik
-    <input [(ngModel)]="payer" />
-  </label>
+    <div>
+      <label>Typ wydatku</label>
+      <select [(ngModel)]="type" name="type" required>
+        <option value="" disabled selected>Wybierz typ wydatku</option>
+        @for (expenseType of expenseTypes; track expenseType) {
+          <option [value]="expenseType">{{ expenseType }}</option>
+        }
+      </select>
+    </div>
 
-  <label>
-    Data
-    <input type="date" [(ngModel)]="date" />
-  </label>
+    <div>
+      <label>Płatnik</label>
+      <input [(ngModel)]="payer" placeholder="Kto zapłacił?" />
+    </div>
+
+    <div>
+      <label>Data</label>
+      <input type="date" [(ngModel)]="date" />
+    </div>
+
+  </div>
 
   <div class="actions">
     <button class="cancel" (click)="cancel.emit()">Anuluj</button>
-    <button class="save" (click)="submit()">Zapisz</button>
+    <button class="save" (click)="submit()">💾 Zapisz</button>
   </div>
 
 </div>

@@ -1,3 +1,5 @@
+/* ══ Add Cost Drawer ══ */
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -13,70 +15,90 @@
   width: 360px;
   height: 100vh;
   background: var(--card-bg);
-  padding: var(--spacing-xl);
+  border-left: 1px solid var(--border-color);
+  padding: 0;
   z-index: 1001;
-  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
+  box-shadow: -12px 0 40px rgba(0,0,0,0.55);
   overflow-y: auto;
   color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Panel header ── */
+.panel-header {
+  padding: var(--spacing-xl);
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(249, 115, 22, 0.04);
 }
 
 .panel h3 {
-  margin-top: 0;
-  margin-bottom: var(--spacing-lg);
-  color: var(--text-main);
-  font-size: 20px;
+  margin: 0;
+  font-size: 16px;
   font-weight: 600;
+  color: var(--text-main);
+}
+
+/* ── Panel body ── */
+.panel-body {
+  padding: var(--spacing-xl);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
 }
 
 .panel label {
   display: block;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 5px;
   color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .panel input,
 .panel select {
   width: 100%;
   padding: var(--spacing-sm) var(--spacing-md);
-  margin-top: var(--spacing-xs);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
   background: var(--card-bg-darker);
   color: var(--text-main);
   font-size: 14px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-
 .panel input:focus,
 .panel select:focus {
   outline: none;
   border-color: var(--primary-accent);
-  box-shadow: 0 0 0 3px rgba(63, 140, 255, 0.1);
+  box-shadow: 0 0 0 3px var(--primary-accent-glow);
 }
-
 .panel input::placeholder {
   color: var(--text-secondary);
 }
 
+/* ── Actions ── */
 .actions {
   display: flex;
   justify-content: flex-end;
   gap: var(--spacing-sm);
-  margin-top: var(--spacing-lg);
-  padding-top: var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
   border-top: 1px solid var(--border-color);
+  background: rgba(0,0,0,0.12);
 }
 
 .actions button {
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: 9px var(--spacing-lg);
   border-radius: var(--radius-md);
   border: none;
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
-  transition: all 0.2s ease;
+  font-family: inherit;
+  transition: all 0.2s;
 }
 
 .actions button.cancel {
@@ -84,20 +106,19 @@
   color: var(--text-muted);
   border: 1px solid var(--border-color);
 }
-
 .actions button.cancel:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255,255,255,0.05);
   color: var(--text-main);
-  border-color: var(--text-muted);
+  border-color: var(--border-hover);
 }
 
 .actions button.save {
-  background: var(--sidebar-bg);
-  color: var(--text-main);
+  background: var(--primary-accent);
+  color: #fff;
+  font-weight: 600;
 }
-
 .actions button.save:hover {
-  background: var(--sidebar-bg-hover);
+  background: var(--primary-accent-dark);
+  box-shadow: var(--shadow-orange);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
 }

@@ -2,96 +2,174 @@
   <div class="modal" (click)="$event.stopPropagation()">
 
     <header>
-      <h2>Dodaj samochód</h2>
+      <h2>➕ Dodaj samochód</h2>
       <button class="close" (click)="closeModal()">✕</button>
     </header>
 
     <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="modal-body">
 
-      <!-- 1. Marka -->
-      <div class="field">
-        <label>Marka</label>
-        <input type="text" list="ac-makes" formControlName="brand"
-          placeholder="np. BMW, Audi, Toyota..."
-          (change)="onBrandChange($event)" autocomplete="off" />
-        <datalist id="ac-makes">
-          @for (m of carService.makes(); track m) {
-            <option [value]="m"></option>
-          }
-        </datalist>
-      </div>
+        <!-- ═══ IDENTYFIKACJA ═══ -->
+        <div class="section-divider"><span>Identyfikacja</span></div>
 
-      <!-- 2. Generacja -->
-      <div class="field">
-        <label>
-          Generacja
-          <span class="field-hint">np. F30, E46, W212</span>
-        </label>
-        <input type="text" list="ac-gens" formControlName="generation"
-          placeholder="{{ generationOptions().length ? 'Wybierz lub wpisz generację...' : 'Najpierw wybierz markę' }}"
-          (change)="onGenerationChange($event)" autocomplete="off" />
-        <datalist id="ac-gens">
-          @for (g of generationOptions(); track g.code) {
-            <option [value]="g.code">{{ g.label }}</option>
-          }
-        </datalist>
-      </div>
-
-      <!-- 3. Wariant / model -->
-      <div class="field">
-        <label>Wariant / model</label>
-        <input type="text" formControlName="model"
-          placeholder="np. 320d, M3, 2.0 TDI, GTI..."
-          autocomplete="off" />
-      </div>
-
-      <!-- 4. Rok + Status -->
-      <div class="row">
+        <!-- Marka -->
         <div class="field">
-          <label>
-            Rok
-            @if (yearRange(); as r) {
-              <span class="year-hint">{{ r.minYear }} – {{ r.maxYear }}</span>
+          <label>Marka <span class="req">*</span></label>
+          <input type="text" list="ac-makes" formControlName="brand"
+            placeholder="np. BMW, Audi, Toyota..."
+            (change)="onBrandChange($event)" autocomplete="off" />
+          <datalist id="ac-makes">
+            @for (m of carService.makes(); track m) {
+              <option [value]="m"></option>
             }
-          </label>
-          <input type="number" formControlName="productionYear"
-            [min]="yearRange()?.minYear ?? 1900"
-            [max]="yearRange()?.maxYear ?? 2026"
-            [placeholder]="yearRange() ? yearRange()!.minYear + ' – ' + yearRange()!.maxYear : 'Rok'" />
+          </datalist>
         </div>
 
-        <div class="field">
-          <label>Status</label>
-          <select formControlName="status">
-            <option [value]="CarStatus.W_NAPRAWIE">W naprawie</option>
-            <option [value]="CarStatus.GOTOWE">Gotowe</option>
-            <option [value]="CarStatus.WYSTAWIONE">Wystawione</option>
-            <option [value]="CarStatus.SPRZEDANE">Sprzedane</option>
-          </select>
-        </div>
-      </div>
+        <!-- Generacja / Model -->
+        <div class="row">
+          <div class="field">
+            <label>
+              Generacja
+              <span class="field-hint">np. F30, E46, W212</span>
+            </label>
+            <input type="text" list="ac-gens" formControlName="generation"
+              placeholder="{{ generationOptions().length ? 'Wybierz lub wpisz...' : 'Najpierw wybierz markę' }}"
+              (change)="onGenerationChange($event)" autocomplete="off" />
+            <datalist id="ac-gens">
+              @for (g of generationOptions(); track g.code) {
+                <option [value]="g.code">{{ g.label }}</option>
+              }
+            </datalist>
+          </div>
 
-      <!-- 5. Ceny -->
-      <div class="row">
-        <div class="field">
-          <label>Cena zakupu</label>
-          <input type="number" formControlName="purchasePrice" />
-        </div>
-        <div class="field">
-          <label>Cena sprzedaży</label>
-          <input type="number" formControlName="salePrice" />
-        </div>
-      </div>
-
-      <!-- 6. Zaproś użytkowników -->
-      <div class="row">
-        <div class="field">
-          <label>Zaproś użytkowników</label>
-          <div class="row">
-            <input type="email" [formControl]="emailControl" placeholder="email@przykład.pl" />
-            <button type="button" (click)="addUser()">Dodaj</button>
+          <div class="field">
+            <label>Wariant / Model <span class="req">*</span></label>
+            <input type="text" formControlName="model"
+              placeholder="np. 320d, M3, 2.0 TDI..."
+              autocomplete="off" />
           </div>
         </div>
+
+        <!-- Rok + VIN -->
+        <div class="row">
+          <div class="field">
+            <label>
+              Rok <span class="req">*</span>
+              @if (yearRange(); as r) {
+                <span class="year-hint">{{ r.minYear }} – {{ r.maxYear }}</span>
+              }
+            </label>
+            <input type="number" formControlName="productionYear"
+              [min]="yearRange()?.minYear ?? 1900"
+              [max]="yearRange()?.maxYear ?? 2030"
+              [placeholder]="yearRange() ? yearRange()!.minYear + ' – ' + yearRange()!.maxYear : 'Rok'" />
+          </div>
+
+          <div class="field">
+            <label>Numer VIN
+              <span class="req">*</span></label>
+            <input type="text" formControlName="vinNumber"
+              placeholder="wymagany" maxlength="17" autocomplete="off" />
+          </div>
+        </div>
+
+        <!-- ═══ DANE TECHNICZNE ═══ -->
+        <div class="section-divider"><span>Dane techniczne</span></div>
+
+        <!-- Przebieg + Moc -->
+        <div class="row">
+          <div class="field">
+            <label>Przebieg (km) <span class="req">*</span></label>
+            <input type="number" formControlName="mileage" placeholder="0" min="0" />
+          </div>
+          <div class="field">
+            <label>Moc (kW)</label>
+            <input type="number" formControlName="kwPower" placeholder="0" min="0" />
+          </div>
+        </div>
+
+        <!-- Pojemność + Kolor -->
+        <div class="row">
+          <div class="field">
+            <label>Pojemność silnika (cm³)</label>
+            <input type="number" formControlName="engineCapacity" placeholder="np. 1998" min="0" />
+          </div>
+          <div class="field">
+            <label>Kolor <span class="req">*</span></label>
+            <select formControlName="carColor">
+              @for (c of colorOptions; track c.value) {
+                <option [value]="c.value">{{ c.label }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- ═══ STAN POJAZDU ═══ -->
+        <div class="section-divider"><span>Stan pojazdu</span></div>
+
+        <!-- Poprzedni właściciele + Status -->
+        <div class="row">
+          <div class="field">
+            <label>Liczba poprzednich właścicieli <span class="req">*</span></label>
+            <input type="number" formControlName="numberOfPreviousOwners" placeholder="0" min="0" />
+          </div>
+          <div class="field">
+            <label>Status <span class="req">*</span></label>
+            <select formControlName="status">
+              <option [value]="CarStatus.W_NAPRAWIE">🔧 W naprawie</option>
+              <option [value]="CarStatus.GOTOWE">✅ Gotowe</option>
+              <option [value]="CarStatus.WYSTAWIONE">📢 Wystawione</option>
+              <option [value]="CarStatus.SPRZEDANE">💰 Sprzedane</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Checkboxy -->
+        <div class="checkbox-row">
+          <label class="checkbox-field">
+            <input type="checkbox" formControlName="isImported" />
+            <span>Pojazd importowany</span>
+          </label>
+          <label class="checkbox-field">
+            <input type="checkbox" formControlName="isDamaged" />
+            <span>Pojazd uszkodzony</span>
+          </label>
+        </div>
+
+        <!-- ═══ WYCENA ═══ -->
+        <div class="section-divider"><span>Wycena</span></div>
+
+        <div class="row">
+          <div class="field">
+            <label>Cena zakupu (zł) <span class="req">*</span></label>
+            <input type="number" formControlName="purchasePrice" placeholder="0" min="0" />
+          </div>
+          <div class="field">
+            <label>Cena sprzedaży (zł)</label>
+            <input type="number" formControlName="salePrice" placeholder="opcjonalnie" />
+          </div>
+        </div>
+
+        <!-- ═══ OPIS ═══ -->
+        <div class="section-divider"><span>Opis</span></div>
+
+        <div class="field">
+          <label>Opis pojazdu</label>
+          <textarea formControlName="description" rows="3"
+            placeholder="Dodatkowe informacje o samochodzie..."></textarea>
+        </div>
+
+        <!-- ═══ ZAPROŚ UŻYTKOWNIKÓW ═══ -->
+        <div class="section-divider"><span>Zaproś do auta</span></div>
+
+        <div class="field">
+          <label>Email użytkownika</label>
+          <div class="row">
+            <input type="email" [formControl]="emailControl" placeholder="email@przykład.pl" />
+            <button type="button" class="primary" style="white-space:nowrap; padding: 8px 14px;" (click)="addUser()">+ Dodaj</button>
+          </div>
+        </div>
+
         @if (usersToInvite.length) {
           <div class="chips">
             @for (user of usersToInvite.controls; track $index) {
@@ -102,15 +180,16 @@
             }
           </div>
         }
-      </div>
+
+      </div><!-- /modal-body -->
 
       <footer>
         <button type="button" (click)="closeModal()">Anuluj</button>
         <button type="submit" class="primary" [disabled]="submitting()">
-          {{ submitting() ? 'Zapisywanie...' : 'Zapisz' }}
+          {{ submitting() ? 'Zapisywanie...' : '💾 Zapisz auto' }}
         </button>
       </footer>
-
     </form>
+
   </div>
 </div>

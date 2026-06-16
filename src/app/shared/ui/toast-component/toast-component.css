@@ -4,14 +4,16 @@
   right: var(--spacing-xl);
   background: var(--card-bg);
   color: var(--text-main);
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-xl);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-xl);
   z-index: 2000;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
   border: 1px solid var(--border-color);
-  animation: slideIn 0.3s ease-out;
+  border-left: 3px solid var(--primary-accent);
+  animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 200px;
 }
 
 @keyframes slideIn {

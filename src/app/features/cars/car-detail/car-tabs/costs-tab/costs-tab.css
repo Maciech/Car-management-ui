@@ -1,180 +1,69 @@
-.cost-card {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 12px;
-  font-weight: 600;
-  font-size: 14px;
-  color: #fff;
-}
+/* ══ Costs Tab ══ */
 
-.cost-data {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  gap: 12px;
-  align-items: center;
-  font-weight: 600;
-  font-size: 14px;
-  color: #fff;
-}
-
-.cost-data .col {
-  padding-left: 12px;
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.cost-data .col:first-child {
-  border-left: none;
-  padding-left: 0;
-}
-
-.cost-actions {
+.costs-wrapper {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: var(--spacing-lg);
 }
 
-@media (max-width: 900px) {
-  .cost-card {
-    grid-template-columns: 1fr auto;
-  }
-
-  .cost-meta {
-    display: none;
-  }
-
-  .cost-data {
-    grid-template-columns: 1fr 1fr;
-    grid-auto-rows: auto;
-  }
-
-  .cost-actions {
-    align-self: start;
-  }
-}
-
-
-
-.icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-
-  background: var(--sidebar-bg);
-  color: #fff;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 12px;
-}
-
-
-.amount {
-  font-weight: 600;
-  font-size: 14px;
-  color: #fff;
-  gap: 16px;
-}
-
+/* ── Header card ── */
 .costs-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-xl);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
 }
 
 .costs-header h3 {
   margin: 0;
-  font-size: 18px;
-  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
 }
 
+.expense-sum {
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 4px 10px;
+  background: var(--card-bg-darker);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.expense-sum strong {
+  color: var(--primary-accent);
+  font-weight: 700;
+}
+
+/* ── Add button ── */
 .add-btn {
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 8px 18px;
+  border-radius: var(--radius-md);
   border: none;
-
-  background: var(--sidebar-bg);
+  background: var(--primary-accent);
   color: #fff;
-
   font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  white-space: nowrap;
 }
-
-.edit-btn {
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
-  background-image: url("../../../../../assets/edit_icon.png");
-  image-resolution: inherit;
-  color: #fff;
-
-  cursor: pointer;
-}
-
-.edit-btn:hover {
-  background: #2a2a45;
-}
-
 .add-btn:hover {
-  background: #2a2a45;
+  background: var(--primary-accent-dark);
+  box-shadow: var(--shadow-orange);
+  transform: translateY(-1px);
 }
 
-.filters {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
+/* ── Grid card ── */
+.grid-card {
+  padding: 0;
+  overflow: hidden;
 }
-
-.filters select {
-  flex: 1;
-
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: none;
-
-  background: #2f2f68;
-  color: #fff;
-
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.filters select:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
-}
-
-/* MOBILE */
-@media (max-width: 600px) {
-  .filters {
-    flex-direction: column;
-  }
-}
-@media (max-width: 900px) {
-  .cost-card {
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "info edit"
-      "type amount"
-      "date amount"
-      "payer amount";
-  }
-
-  .icon {
-    display: none;
-  }
-
-  .amount {
-    grid-area: amount;
-    align-self: center;
-  }
-
-  .icon-btn {
-    grid-area: edit;
-  }
-}
-
-

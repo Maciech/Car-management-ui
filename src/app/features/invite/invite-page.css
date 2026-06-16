@@ -1,20 +1,38 @@
+/* ══ Invite Page ══ */
+
 .invite-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--background);
-  padding: var(--spacing-lg);
+  background-image:
+    radial-gradient(ellipse 60% 50% at 50% 30%, rgba(249, 115, 22, 0.05) 0%, transparent 70%);
+  padding: var(--spacing-xl);
 }
 
 .invite-card {
   background: var(--card-bg);
-  border-radius: var(--radius-lg);
-  padding: 48px 40px;
-  max-width: 420px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 0;
+  max-width: 440px;
   width: 100%;
   text-align: center;
   box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+
+/* Orange accent top bar */
+.invite-card::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-accent), #fbbf24);
+}
+
+.card-inner {
+  padding: 44px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,8 +40,9 @@
 }
 
 .state-icon {
-  font-size: 52px;
+  font-size: 56px;
   line-height: 1;
+  margin-bottom: 4px;
 }
 
 h1 {
@@ -37,21 +56,28 @@ p {
   margin: 0;
   font-size: 14px;
   color: var(--text-muted);
+  line-height: 1.5;
 }
 
 .car-name {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-main);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-accent);
+  padding: 10px 20px;
+  background: var(--primary-accent-glow);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--primary-accent-border);
 }
 
 .sub {
   font-size: 13px;
+  color: var(--text-muted);
 }
 
 .redirect-hint {
   font-size: 12px;
-  opacity: 0.6;
+  color: var(--text-secondary);
+  opacity: 0.7;
 }
 
 .actions {
@@ -59,24 +85,27 @@ p {
   flex-direction: column;
   gap: var(--spacing-sm);
   width: 100%;
-  margin-top: var(--spacing-md);
+  margin-top: var(--spacing-sm);
 }
 
 .btn-primary {
   display: block;
   width: 100%;
-  padding: 12px;
+  padding: 13px;
   border-radius: var(--radius-md);
   background: var(--primary-accent);
   color: #fff;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   text-align: center;
-  transition: opacity 0.15s ease;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
 }
-
-.btn-primary:hover { opacity: 0.88; }
+.btn-primary:hover {
+  background: var(--primary-accent-dark);
+  box-shadow: var(--shadow-orange);
+  transform: translateY(-1px);
+}
 
 .btn-outline {
   display: block;
@@ -88,10 +117,10 @@ p {
   font-size: 14px;
   text-decoration: none;
   text-align: center;
-  transition: all 0.15s ease;
+  transition: all 0.15s;
 }
-
 .btn-outline:hover {
-  border-color: var(--text-muted);
+  border-color: var(--border-hover);
   color: var(--text-main);
+  background: rgba(255,255,255,0.04);
 }

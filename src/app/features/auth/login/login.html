@@ -1,36 +1,45 @@
 <section class="login-page">
   <div class="login-card app-card">
 
-    <h2 *ngIf="!isRegisterMode">Zaloguj się</h2>
-    <h2 *ngIf="isRegisterMode">Zarejestruj się</h2>
+    <!-- Brand -->
+    <div class="login-brand">
+      <div class="login-brand-logo">🚗</div>
+      <h1>AutoFleet</h1>
+      <p>Panel zarządzania flotą</p>
+    </div>
 
-    <input
-      type="email"
-      placeholder="Email"
-      [(ngModel)]="email"
-    />
+    <!-- Form -->
+    <div class="login-form-body">
 
-    <input
-      type="password"
-      placeholder="Hasło"
-      [(ngModel)]="password"
-    />
+      <h2>Zaloguj się</h2>
 
-    <button *ngIf="!isRegisterMode" (click)="login()">
-      Zaloguj
-    </button>
+      <input
+        type="email"
+        placeholder="Adres e-mail"
+        [(ngModel)]="email"
+        autocomplete="email"
+      />
 
+      <input
+        type="password"
+        placeholder="Hasło"
+        [(ngModel)]="password"
+        autocomplete="current-password"
+      />
+
+      @if (error) {
+        <div class="login-error">{{ error }}</div>
+      }
+
+      <button (click)="login()">
+        Zaloguj się →
+      </button>
+
+    </div>
 
     <p class="switch-mode">
-      <span *ngIf="!isRegisterMode">
-        Nie masz konta?
-        <a (click)="toggleMode()">Zarejestruj się</a>
-      </span>
-
-      <span *ngIf="isRegisterMode">
-        Masz już konto?
-        <a (click)="toggleMode()">Zaloguj się</a>
-      </span>
+      Nie masz konta?
+      <a routerLink="/register">Zarejestruj się</a>
     </p>
 
   </div>

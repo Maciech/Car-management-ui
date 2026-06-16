@@ -1,35 +1,250 @@
+/* ══ Car Summary ══ */
+
+.summary {
+  padding: var(--spacing-xl);
+}
+
+/* ── View mode header ── */
 .summary-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.title-row {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
-.summary h1 {
+.summary-header h1 {
   margin: 0;
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-main);
 }
 
-.summary .grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px 24px;
-}
-
-.summary .grid > div {
-  font-size: 14px;
-  color: var(--text-main);
-}
-
-.summary span {
+.generation {
   color: var(--text-muted);
   font-weight: 500;
 }
 
-@media (max-width: 768px) {
-  .summary .grid {
-    grid-template-columns: 1fr;
-  }
+/* ── Edit trigger button ── */
+.edit-trigger {
+  flex-shrink: 0;
+  padding: 7px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.edit-trigger:hover {
+  border-color: var(--primary-accent-border);
+  color: var(--primary-accent);
+  background: var(--primary-accent-glow);
+}
+
+/* ── Info grid (view mode) ── */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--border-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.info-item {
+  background: var(--card-bg-darker);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.info-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.info-value.price      { color: var(--text-main); }
+.info-value.price-sale { color: var(--primary-accent); }
+.info-value.damaged    { color: var(--warning); }
+.info-value.vin        { font-size: 13px; font-family: monospace; letter-spacing: 0.04em; }
+
+/* ── Description block (view mode) ── */
+.description-block {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--card-bg-darker);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.description-block p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-main);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* ══ Edit mode ══ */
+
+.edit-header {
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.edit-header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* ── Form layout ── */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.form-row {
+  display: grid;
+  gap: var(--spacing-md);
+}
+.form-row.four  { grid-template-columns: repeat(4, 1fr); }
+.form-row.three { grid-template-columns: repeat(3, 1fr); }
+.form-row.two   { grid-template-columns: repeat(2, 1fr); }
+.form-row.one   { grid-template-columns: 1fr; max-width: 320px; }
+
+@media (max-width: 900px) {
+  .form-row.four  { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
+  .form-row.four,
+  .form-row.three,
+  .form-row.two { grid-template-columns: 1fr; }
+}
+
+/* ── Field ── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 72px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* ── Checkboxes ── */
+.form-row.checkboxes {
+  display: flex;
+  gap: var(--spacing-xl);
+  flex-wrap: wrap;
+  grid-template-columns: unset;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 14px;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.checkbox-field input[type="checkbox"] {
+  width: auto;
+  padding: 0;
+  accent-color: var(--primary-accent);
+}
+
+/* ── Form actions ── */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
+}
+
+.btn-cancel {
+  padding: 9px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-cancel:hover {
+  background: var(--border-color);
+  color: var(--text-main);
+}
+
+.btn-save {
+  padding: 9px 24px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: var(--primary-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-save:hover:not(:disabled) {
+  background: var(--primary-accent-dark);
+  box-shadow: var(--shadow-orange);
+  transform: translateY(-1px);
+}
+.btn-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

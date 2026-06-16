@@ -12,7 +12,7 @@ export class Topbar {
 
   private router = inject(Router);
 
-  title = signal('');
+  title = signal('Auto Fleet');
 
   constructor() {
     this.router.events
@@ -22,7 +22,7 @@ export class Topbar {
           this.router.routerState.snapshot.root
         );
 
-        this.title.set(activeRoute.data['title'] ?? '');
+        // this.title.set(activeRoute.data['title'] ?? '');
       });
   }
 

@@ -1,3 +1,5 @@
+/* ══ Add Car Modal ══ */
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -6,96 +8,130 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
 }
 
 .modal {
   background: var(--card-bg);
-  width: 500px;
-  max-width: 90%;
+  border: 1px solid var(--border-color);
+  width: 800px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
   border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
   box-shadow: var(--shadow-xl);
   color: var(--text-main);
 }
 
+/* ── Header ── */
 .modal header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(249,115,22,0.04);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 .modal header h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-main);
 }
 
+/* ── Close ── */
 .close {
   background: transparent;
   border: none;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
   color: var(--text-muted);
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-sm);
-  transition: all 0.15s ease;
+  transition: all 0.15s;
 }
-
 .close:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255,255,255,0.07);
   color: var(--text-main);
 }
 
+/* ── Form body ── */
+.modal-body {
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* ── Field ── */
 .field {
   display: flex;
   flex-direction: column;
-  margin-bottom: var(--spacing-md);
+  gap: 5px;
 }
 
 .field label {
-  margin-bottom: var(--spacing-xs);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
   color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
 }
 
+.field input,
+.field select {
+  width: 100%;
+}
+
+/* ── Year range hint ── */
 .year-hint {
   font-size: 11px;
   font-weight: 600;
   color: var(--primary-accent);
-  background: rgba(63, 140, 255, 0.12);
-  padding: 2px 6px;
+  background: var(--primary-accent-glow);
+  padding: 2px 7px;
   border-radius: 4px;
+  text-transform: none;
+  letter-spacing: 0;
 }
-
 .year-hint.loading {
   color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255,255,255,0.05);
 }
 
 .field-hint {
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0;
 }
 
+/* ── Row layout (two fields side by side) ── */
+.row {
+  display: flex;
+  gap: var(--spacing-md);
+}
+.row .field { flex: 1; }
+
+/* ── Invite chips ── */
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xs);
-  margin-top: var(--spacing-xs);
+  gap: 6px;
+  margin-top: 4px;
 }
 
 .user-chip {
@@ -103,75 +139,130 @@
   align-items: center;
   gap: 4px;
   background: var(--card-bg-darker);
-  border-radius: 12px;
-  padding: 2px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 3px 10px;
   font-size: 12px;
   color: var(--text-muted);
 }
-
 .user-chip button {
   background: none;
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 11px;
+  font-size: 14px;
   padding: 0;
-}
-
-.row {
+  line-height: 1;
   display: flex;
-  gap: var(--spacing-md);
+  align-items: center;
 }
+.user-chip button:hover { color: var(--error); }
 
-.row .field {
+/* ── Section divider ── */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: 4px 0;
+}
+.section-divider span {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.section-divider::before,
+.section-divider::after {
+  content: '';
   flex: 1;
+  height: 1px;
+  background: var(--border-color);
 }
 
+/* ── Textarea ── */
+.field textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 70px;
+}
+
+/* ── Checkbox row ── */
+.checkbox-row {
+  display: flex;
+  gap: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 14px;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.checkbox-field input[type="checkbox"] {
+  width: auto;
+  padding: 0;
+  accent-color: var(--primary-accent);
+}
+
+/* ── Required star ── */
+.req {
+  color: var(--error);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Footer ── */
 .modal footer {
   display: flex;
   justify-content: flex-end;
   gap: var(--spacing-sm);
-  margin-top: var(--spacing-lg);
-  padding-top: var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
   border-top: 1px solid var(--border-color);
+  background: rgba(0,0,0,0.15);
 }
 
 .modal footer button:not(.primary) {
   background: transparent;
   color: var(--text-muted);
   border: 1px solid var(--border-color);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: 9px var(--spacing-lg);
   border-radius: var(--radius-md);
   cursor: pointer;
   font-size: 13px;
-  transition: all 0.2s ease;
+  font-family: inherit;
+  transition: all 0.2s;
 }
-
 .modal footer button:not(.primary):hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255,255,255,0.05);
   color: var(--text-main);
-  border-color: var(--text-muted);
+  border-color: var(--border-hover);
 }
 
 .modal button.primary {
-  background: var(--sidebar-bg);
-  color: var(--text-main);
+  background: var(--primary-accent);
+  color: #fff;
   border: none;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: 9px var(--spacing-xl);
   border-radius: var(--radius-md);
   cursor: pointer;
   font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  font-family: inherit;
+  transition: all 0.2s;
 }
-
 .modal button.primary:hover:not(:disabled) {
-  background: var(--sidebar-bg-hover);
+  background: var(--primary-accent-dark);
+  box-shadow: var(--shadow-orange);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
 }
-
 .modal button.primary:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }

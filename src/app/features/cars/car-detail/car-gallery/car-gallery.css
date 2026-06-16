@@ -1,7 +1,9 @@
+/* ══ Car Gallery ══ */
+
 .gallery {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .gallery-header {
@@ -10,97 +12,133 @@
   align-items: center;
 }
 
+.gallery-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Buttons ── */
 .upload-btn {
-  background: var(--sidebar-bg);
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 7px 14px;
+  border-radius: var(--radius-md);
   font-size: 13px;
+  font-family: inherit;
   cursor: pointer;
+  transition: all 0.15s;
+}
+.upload-btn:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-main);
+  border-color: var(--border-hover);
 }
 
 .save-btn {
   align-self: flex-start;
-  background: #6ee7b7;
-  color: #0f172a;
-  padding: 6px 14px;
-  border-radius: 8px;
+  background: var(--primary-accent);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: var(--radius-md);
   border: none;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
-  font-weight: 500;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.save-btn:hover {
+  background: var(--primary-accent-dark);
+  box-shadow: var(--shadow-orange);
+  transform: translateY(-1px);
 }
 
+/* ── Thumbnail strip ── */
 .strip {
   display: flex;
   gap: 12px;
   overflow-x: auto;
+  padding-bottom: 6px;
 }
 
-/* kontener pojedynczego zdjęcia */
+.strip::-webkit-scrollbar { height: 4px; }
+.strip::-webkit-scrollbar-track { background: transparent; }
+.strip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
 .thumb-wrapper {
   position: relative;
   flex-shrink: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  transition: border-color 0.15s;
+}
+.thumb-wrapper:hover {
+  border-color: var(--primary-accent-border);
 }
 
-/* miniaturka */
 .thumb {
-  width: 320px;
-  height: 220px;
+  width: 300px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 8px;
+  display: block;
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
+.thumb:hover { transform: scale(1.03); }
 
-/* przycisk delete */
+/* ── Delete button ── */
 .delete-btn {
   position: absolute;
-  top: 6px;
-  right: 6px;
-
+  top: 8px;
+  right: 8px;
   width: 28px;
   height: 28px;
   border-radius: 50%;
-
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.70);
   color: #fff;
   border: none;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s ease, background 0.2s ease;
+  font-size: 14px;
+  transition: opacity 0.15s, background 0.15s;
 }
+.thumb-wrapper:hover .delete-btn { opacity: 1; }
+.delete-btn:hover { background: var(--error); }
 
-/* pokaż przy hoverze */
-.thumb-wrapper:hover .delete-btn {
-  opacity: 1;
-}
-
-.delete-btn:hover {
-  background: #c62828;
-}
-
+/* ── Pending upload ── */
 .pending {
-  opacity: 0.6;
-  outline: 2px dashed #6ee7b7;
+  opacity: 0.55;
+  outline: 2px dashed var(--primary-accent-border);
 }
 
+/* ── Lightbox overlay ── */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.92);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: zoom-out;
   z-index: 1000;
+  backdrop-filter: blur(8px);
 }
 
 .full {
   max-width: 90vw;
   max-height: 90vh;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
 }

@@ -39,6 +39,10 @@ export class CarService {
     );
   }
 
+  update(id: number, payload: object): Observable<Car> {
+    return this.http.put<Car>(`${this.HOST_URL + this.API}/${id}`, payload);
+  }
+
   getAll(): Observable<Car[]> {
     this.loading.set(true);
     return this.http.get<Car[]>(this.HOST_URL + this.API).pipe(

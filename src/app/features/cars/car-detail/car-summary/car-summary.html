@@ -1,15 +1,203 @@
 <section class="summary app-card">
-  <div class="summary-header">
-    <h1>{{ car.brand }} {{ car.model }}</h1>
-    <span class="status-badge" [class]="statusCss">{{ statusLabel }}</span>
-  </div>
 
-  <div class="grid">
-    <div><span>Rok produkcji</span>{{ car.productionYear }}</div>
-    <div><span>Przebieg</span>{{ car.mileage | number:'1.0-0' }} km</div>
-    <div><span>Cena zakupu</span>{{ car.purchasePrice | number:'1.0-0' }} zł</div>
-    <div><span>Cena sprzedaży</span>{{ car.salePrice != null ? (car.salePrice | number:'1.0-0') + ' zł' : '—' }}</div>
-    <div><span>Importowany</span>{{ car.isImported ? 'Tak' : 'Nie' }}</div>
-    <div><span>Uszkodzony</span>{{ car.isDamaged ? 'Tak' : 'Nie' }}</div>
-  </div>
+  <!-- ══ VIEW MODE ══ -->
+  @if (!editing()) {
+
+    <div class="summary-header">
+      <div class="title-row">
+        <h1>
+          {{ car.brand }}
+          @if (car.generation) { <span class="generation">{{ car.generation }}</span> }
+          {{ car.model }}
+        </h1>
+        <span class="status-badge" [class]="statusCss">{{ statusLabel }}</span>
+      </div>
+      <button class="edit-trigger" (click)="startEdit()">✏️ Edytuj</button>
+    </div>
+
+    <!-- Siatka informacji -->
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="info-label">Rok produkcji</span>
+        <strong class="info-value">{{ car.productionYear }}</strong>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Przebieg</span>
+        <strong class="info-value">{{ car.mileage | number:'1.0-0' }} km</strong>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Moc</span>
+        <strong class="info-value">{{ car.kwPower ? car.kwPower + ' kW' : '—' }}</strong>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Pojemność silnika</span>
+        <strong class="info-value">{{ car.engineCapacity ? (car.engineCapacity | number:'1.0-0') + ' cm³' : '—' }}</strong>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Kolor</span>
+        <strong class="info-value">{{ colorLabel }}</strong>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Numer VIN</span>
+        <strong class="info-value vin">{{ car.vinNumber || '—' }}</strong>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Poprzedni właściciele</span>
+        <strong class="info-value">{{ car.numberOfPreviousOwners != null ? car.numberOfPreviousOwners : '—' }}</strong>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Cena zakupu</span>
+        <strong class="info-value price">{{ car.purchasePrice | number:'1.0-0' }} zł</strong>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Cena sprzedaży</span>
+        <strong class="info-value" [class.price-sale]="car.salePrice">
+          {{ car.salePrice != null ? (car.salePrice | number:'1.0-0') + ' zł' : '—' }}
+        </strong>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Import</span>
+        <strong class="info-value">{{ car.isImported ? '✓ Tak' : 'Nie' }}</strong>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Uszkodzony</span>
+        <strong class="info-value" [class.damaged]="car.isDamaged">
+          {{ car.isDamaged ? '⚠️ Tak' : 'Nie' }}
+        </strong>
+      </div>
+    </div>
+
+    <!-- Opis (jeśli istnieje) -->
+    @if (car.description) {
+      <div class="description-block">
+        <span class="info-label">Opis</span>
+        <p>{{ car.description }}</p>
+      </div>
+    }
+
+  }
+
+  <!-- ══ EDIT MODE ══ -->
+  @if (editing()) {
+
+    <div class="edit-header">
+      <h2>Edytuj dane pojazdu</h2>
+    </div>
+
+    <form [formGroup]="form" class="edit-form" (ngSubmit)="save()">
+
+      <!-- Wiersz 1: Marka / Generacja / Model -->
+      <div class="form-row three">
+        <div class="field">
+          <label>Marka</label>
+          <input type="text" formControlName="brand" list="ac-makes-edit" autocomplete="off" />
+          <datalist id="ac-makes-edit">
+            @for (m of carSvc.makes(); track m) { <option [value]="m"></option> }
+          </datalist>
+        </div>
+        <div class="field">
+          <label>Generacja</label>
+          <input type="text" formControlName="generation" placeholder="np. F30, W212" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label>Wariant / Model</label>
+          <input type="text" formControlName="model" autocomplete="off" />
+        </div>
+      </div>
+
+      <!-- Wiersz 2: Rok / Przebieg / Moc / Pojemność -->
+      <div class="form-row four">
+        <div class="field">
+          <label>Rok produkcji</label>
+          <input type="number" formControlName="productionYear" min="1900" max="2030" />
+        </div>
+        <div class="field">
+          <label>Przebieg (km)</label>
+          <input type="number" formControlName="mileage" min="0" />
+        </div>
+        <div class="field">
+          <label>Moc (kW)</label>
+          <input type="number" formControlName="kwPower" min="0" />
+        </div>
+        <div class="field">
+          <label>Pojemność (cm³)</label>
+          <input type="number" formControlName="engineCapacity" min="0" />
+        </div>
+      </div>
+
+      <!-- Wiersz 3: Kolor / VIN / Poprzedni właściciele -->
+      <div class="form-row three">
+        <div class="field">
+          <label>Kolor</label>
+          <select formControlName="carColor">
+            @for (c of colorOptions; track c.value) {
+              <option [value]="c.value">{{ c.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="field">
+          <label>Numer VIN</label>
+          <input type="text" formControlName="vinNumber" maxlength="17" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label>Poprzedni właściciele</label>
+          <input type="number" formControlName="numberOfPreviousOwners" min="0" />
+        </div>
+      </div>
+
+      <!-- Wiersz 4: Ceny -->
+      <div class="form-row two">
+        <div class="field">
+          <label>Cena zakupu (zł)</label>
+          <input type="number" formControlName="purchasePrice" min="0" />
+        </div>
+        <div class="field">
+          <label>Cena sprzedaży (zł)</label>
+          <input type="number" formControlName="salePrice" placeholder="opcjonalnie" />
+        </div>
+      </div>
+
+      <!-- Wiersz 5: Status -->
+      <div class="form-row one">
+        <div class="field">
+          <label>Status pojazdu</label>
+          <select formControlName="status">
+            @for (opt of statusOptions; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- Wiersz 6: Checkboxy -->
+      <div class="form-row checkboxes">
+        <label class="checkbox-field">
+          <input type="checkbox" formControlName="isImported" />
+          <span>Pojazd importowany</span>
+        </label>
+        <label class="checkbox-field">
+          <input type="checkbox" formControlName="isDamaged" />
+          <span>Pojazd uszkodzony</span>
+        </label>
+      </div>
+
+      <!-- Wiersz 7: Opis -->
+      <div class="field">
+        <label>Opis pojazdu</label>
+        <textarea formControlName="description" rows="3"
+          placeholder="Dodatkowe informacje o samochodzie..."></textarea>
+      </div>
+
+      <!-- Akcje -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="cancel()">Anuluj</button>
+        <button type="submit" class="btn-save" [disabled]="saving()">
+          {{ saving() ? 'Zapisywanie...' : '💾 Zapisz zmiany' }}
+        </button>
+      </div>
+
+    </form>
+
+  }
+
 </section>

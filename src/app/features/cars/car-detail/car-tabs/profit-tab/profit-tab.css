@@ -1,65 +1,67 @@
+/* ══ Profit Tab ══ */
+
 .loading,
 .error {
   padding: var(--spacing-lg);
   color: var(--text-muted);
   text-align: center;
+  font-size: 14px;
 }
+.error { color: var(--error); }
 
-.error {
-  color: var(--danger, #e57373);
-}
-
+/* ── Grid of 3 profit sections ── */
 .profit-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-lg);
-  padding: var(--spacing-md);
 }
 
 @media (max-width: 900px) {
-  .profit-grid {
-    grid-template-columns: 1fr;
-  }
+  .profit-grid { grid-template-columns: 1fr; }
 }
 
+/* ── Section card ── */
 .profit-section {
-  background: var(--card-bg-darker, rgba(255,255,255,0.04));
+  background: var(--card-bg-darker);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: var(--spacing-md);
+  padding: var(--spacing-lg);
 }
 
 .profit-section.highlight {
-  border: 1px solid var(--border-color);
+  border-color: var(--primary-accent-border);
+  background: rgba(249, 115, 22, 0.04);
 }
 
 .profit-section h3 {
-  margin: 0 0 var(--spacing-md) 0;
-  font-size: 13px;
-  font-weight: 600;
+  margin: 0 0 var(--spacing-md);
+  font-size: 11px;
+  font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
+/* ── Rows inside section ── */
 .rows {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: 8px;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--text-main);
-  padding: var(--spacing-xs) 0;
+  padding: 3px 0;
 }
 
 .row.total {
   border-top: 1px solid var(--border-color);
   padding-top: var(--spacing-sm);
-  margin-top: var(--spacing-xs);
+  margin-top: 4px;
 }
 
 .row span {
@@ -70,10 +72,11 @@
   font-weight: 600;
 }
 
-.positive {
-  color: var(--success, #4caf50);
+/* ── Big profit number ── */
+.profit-section.highlight .row strong {
+  font-size: 18px;
 }
 
-.negative {
-  color: var(--danger, #e57373);
-}
+.positive { color: var(--success) !important; }
+.negative { color: var(--error) !important;   }
+.accent   { color: var(--primary-accent); }

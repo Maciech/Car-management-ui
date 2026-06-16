@@ -5,6 +5,7 @@ import {CarService} from '../car-service';
 import {ToastService} from '../../../shared/ui/toast-service';
 import {MailService} from '../../mailing/mail-service';
 import {CarStatus} from '../../../shared/ui/enums/car-status.enum';
+import {CAR_COLOR_LABELS, CarColor} from '../../../shared/ui/enums/car-color.enum';
 import {CAR_GENERATIONS, CarGeneration} from '../../../shared/data/car-generations';
 
 @Component({
@@ -23,19 +24,41 @@ export class AddCarModal {
   private currentYear = new Date().getFullYear();
 
   readonly CarStatus = CarStatus;
+  readonly CarColor  = CarColor;
+  readonly colorOptions = Object.values(CarColor).map(v => ({value: v, label: CAR_COLOR_LABELS[v]}));
 
   generationOptions = signal<CarGeneration[]>([]);
   submitting        = signal(false);
   yearRange         = signal<{minYear: number; maxYear: number} | null>(null);
 
   form = this.fb.nonNullable.group({
+    // ── Identyfikacja ──────────────────────────────────────────────────────────
     brand:          ['', Validators.required],
     generation:     [''],
     model:          ['', Validators.required],
     productionYear: [this.currentYear, [Validators.required, Validators.min(1900)]],
+
+    // ── Dane techniczne ────────────────────────────────────────────────────────
+    mileage:        [0,  [Validators.required, Validators.min(0)]],
+    kwPower:        [0,  [Validators.min(1)]],
+    engineCapacity: [0,  [Validators.min(1)]],
+    carColor:       [CarColor.WHITE, Validators.required],
+    vinNumber:      ['', Validators.required],
+
+    // ── Stan pojazdu ───────────────────────────────────────────────────────────
+    isImported:              [false],
+    isDamaged:               [false],
+    numberOfPreviousOwners:  [0, [Validators.required, Validators.min(0)]],
+
+    // ── Opis ──────────────────────────────────────────────────────────────────
+    description: [''],
+
+    // ── Wycena i status ────────────────────────────────────────────────────────
     purchasePrice:  [0, [Validators.required, Validators.min(0)]],
     salePrice:      [null as number | null],
     status:         [CarStatus.GOTOWE, Validators.required],
+
+    // ── Zaproszenia ────────────────────────────────────────────────────────────
     usersToInvite:  this.fb.array<string>([]),
   });
 
@@ -71,20 +94,25 @@ export class AddCarModal {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     const raw = this.form.getRawValue();
     const car: Car = {
-      carId: null,
-      images: [],
-      kwPower: 0,
-      mileage: 0,
-      isImported: false,
-      isDamaged: false,
-      brand: raw.brand,
-      generation: raw.generation || undefined,
-      model: raw.model,
-      productionYear: raw.productionYear,
-      purchasePrice: raw.purchasePrice,
-      salePrice: raw.salePrice ?? undefined,
-      isSold: raw.status === CarStatus.SPRZEDANE,
-      status: raw.status,
+      carId:                  null,
+      images:                 [],
+      brand:                  raw.brand,
+      generation:             raw.generation || undefined,
+      model:                  raw.model,
+      productionYear:         raw.productionYear,
+      mileage:                raw.mileage,
+      kwPower:                raw.kwPower,
+      engineCapacity:         raw.engineCapacity,
+      carColor:               raw.carColor,
+      vinNumber:              raw.vinNumber,
+      isImported:             raw.isImported,
+      isDamaged:              raw.isDamaged,
+      numberOfPreviousOwners: raw.numberOfPreviousOwners,
+      description:            raw.description || '',
+      purchasePrice:          raw.purchasePrice,
+      salePrice:              raw.salePrice ?? undefined,
+      isSold:                 raw.status === CarStatus.SPRZEDANE,
+      status:                 raw.status,
     };
     this.submitting.set(true);
     const carName = [raw.brand, raw.generation, raw.model].filter(Boolean).join(' ');

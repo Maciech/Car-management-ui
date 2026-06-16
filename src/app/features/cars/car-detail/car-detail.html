@@ -4,10 +4,9 @@
 
   <section class="car-detail">
 
-    <app-car-summary [car]="car()!" />
+    <app-car-summary [car]="car()!" (updated)="load()" />
 
-    <app-car-gallery [carId]="car()?.carId!"
-                     (changed)="load()" ]/>
+    <app-car-gallery [carId]="car()?.carId!" (changed)="load()" />
 
     <app-car-tabs [carId]="car()!.carId!" />
 

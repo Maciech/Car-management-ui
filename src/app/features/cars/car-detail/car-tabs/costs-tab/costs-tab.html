@@ -1,11 +1,35 @@
-<div class="app-card">
+<div class="costs-wrapper">
 
-  <div class="costs-header">
-  <h3>Koszty</h3>
+  <!-- Header -->
+  <div class="costs-header app-card">
+    <div class="header-left">
+      <h3>Koszty pojazdu</h3>
+      @if (expenseSum() > 0) {
+        <span class="expense-sum">
+          Suma: <strong>{{ expenseSum() | number:'1.0-0' }} zł</strong>
+        </span>
+      }
+    </div>
+    <button class="add-btn" (click)="openAdd()">＋ Dodaj koszt</button>
+  </div>
 
-  <button class="add-btn" (click)="openAdd()">＋ Dodaj koszt</button>
+  <!-- AG Grid -->
+  <div class="grid-card app-card">
+    <ag-grid-angular
+      style="width: 100%; height: 420px;"
+      [theme]="agTheme()"
+      [rowData]="rowData"
+      [columnDefs]="columnDefs"
+      [pagination]="true"
+      [paginationPageSize]="15"
+      [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+  </div>
+
 </div>
 
+<!-- Add/Edit drawer -->
 @if (showAdd()) {
   <app-add-cost
     [carId]="carId"
@@ -13,19 +37,3 @@
     (saved)="onSaved()"
     (cancel)="closeAdd()" />
 }
-</div>
-<div class="app-card">
-  <ag-grid-angular
-    style="width: 100%; height: 500px;"
-    [theme]="myTheme"
-    [rowData]="rowData"
-    [columnDefs]="columnDefs"
-    [pagination]="true"
-    [paginationPageSize]="20"
-    [gridOptions]="gridOptions">
-  </ag-grid-angular>
-</div>
-
-<div>
-  Suma kosztów: {{expenseSum()}}
-</div>

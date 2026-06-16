@@ -1,89 +1,77 @@
 import {Component, computed, inject, Input, OnInit, signal} from '@angular/core';
+import {DecimalPipe} from '@angular/common';
 import {CostModel} from './cost-model';
 import {CostsService} from './costs-service';
 import {AddCost} from './add-cost/add-cost';
-import {ExpenseType} from '../../../../../shared/ui/enums/expense-type';
 import {AgGridAngular} from 'ag-grid-angular';
 import {ToastService} from '../../../../../shared/ui/toast-service';
-import {colorSchemeDarkBlue, GridReadyEvent, SizeColumnsToContentStrategy, themeQuartz, GridOptions} from 'ag-grid-community';
+import {ThemeService} from '../../../../../core/theme/theme.service';
+import {
+  colorSchemeDarkBlue,
+  colorSchemeLight,
+  GridOptions,
+  GridReadyEvent,
+  SizeColumnsToContentStrategy,
+  themeQuartz,
+} from 'ag-grid-community';
 
 @Component({
   selector: 'app-costs-tab',
-  imports: [
-    AddCost,
-    AgGridAngular
-  ],
+  imports: [AddCost, AgGridAngular, DecimalPipe],
   templateUrl: './costs-tab.html',
   styleUrl: './costs-tab.css',
 })
 export class CostsTab implements OnInit {
   @Input() carId!: number;
 
-  showAdd = signal(false);
-  expenseSum = signal<number | null>(null);
+  private costService  = inject(CostsService);
+  private toastService = inject(ToastService);
+  private themeService = inject(ThemeService);
+
+  showAdd     = signal(false);
+  expenseSum  = signal<number>(0);
   editingCost = signal<CostModel | null>(null);
+  rowData: CostModel[] = [];
 
-  costService = inject(CostsService);
-  toastService = inject(ToastService);
-  myTheme = themeQuartz.withPart(colorSchemeDarkBlue);
-
-  rowData: any[] = [];
+  // Reaguje na zmianę motywu bez restartu komponentu
+  agTheme = computed(() =>
+    this.themeService.isDark()
+      ? themeQuartz.withPart(colorSchemeDarkBlue)
+      : themeQuartz.withPart(colorSchemeLight)
+  );
 
   gridOptions: GridOptions = {
-    autoSizeStrategy: {
-      type: 'fitCellContents'
-    } as SizeColumnsToContentStrategy
+    autoSizeStrategy: {type: 'fitCellContents'} as SizeColumnsToContentStrategy,
+    suppressMovableColumns: true,
   };
 
-
   columnDefs = [
-    { field: 'expenseId', headerName: 'ID' },
-    { field: 'type', headerName: 'Typ', sortable: true, filter: true },
-    { field: 'date', headerName: 'Data', sortable: true },
-    { field: 'description', headerName: 'Opis', filter: true },
-    { field: 'payer', headerName: 'Płatnik' , sortable: true, filter: true},
-    { field: 'amount', headerName: 'Wartość [zł]', sortable: true, filter: true},
+    {field: 'type',        headerName: 'Typ',          sortable: true, filter: true},
+    {field: 'date',        headerName: 'Data',         sortable: true},
+    {field: 'description', headerName: 'Opis',         filter: true, flex: 1},
+    {field: 'payer',       headerName: 'Płatnik',      sortable: true},
+    {field: 'amount',      headerName: 'Kwota (zł)',   sortable: true, filter: true},
   ];
 
+  ngOnInit() { this.load(); }
 
-  ngOnInit() {
-    this.getCostsByCarId();
+  load() {
+    this.costService.getAllCostsByCarId(this.carId).subscribe({
+      next: costs => {
+        this.rowData = costs;
+        this.expenseSum.set(
+          costs.length > 0 ? costs.reduce((s, c) => s + c.amount, 0) : 0
+        );
+      },
+      error: () => this.toastService.show('Nie udało się pobrać kosztów'),
+    });
   }
 
-  openAdd() {
-    this.showAdd.set(true);
-  }
+  openAdd()   { this.editingCost.set(null); this.showAdd.set(true); }
+  closeAdd()  { this.showAdd.set(false); this.editingCost.set(null); }
+  editCost(e: CostModel) { this.editingCost.set(e); this.showAdd.set(true); }
 
-  closeAdd() {
-    this.showAdd.set(false);
-  }
+  onSaved()   { this.closeAdd(); this.load(); }
 
-  onSaved() {
-    this.closeAdd();
-    this.getCostsByCarId();
-  }
-
-  getCostsByCarId() {
-    this.costService.getAllCostsByCarId(this.carId)
-      .subscribe({
-        next: (costs) => {
-          this.rowData = costs;
-          this.expenseSum.set(costs.length > 0
-            ? costs.map(value => value.amount).reduce((a, b) => a + b)
-            : 0);
-        },
-        error: () => {
-          this.toastService.show("Koszty dla podanego samochodu nie zostały znalezione")
-        },
-      });
-  }
-
-  editCost(expense: CostModel) {
-      this.editingCost.set(expense);
-      this.showAdd.set(true);
-  }
-
-  onGridReady(params: GridReadyEvent) {
-    params.api.sizeColumnsToFit();
-  }
+  onGridReady(params: GridReadyEvent) { params.api.sizeColumnsToFit(); }
 }

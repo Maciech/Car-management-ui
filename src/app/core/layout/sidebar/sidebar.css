@@ -1,97 +1,136 @@
+/* ══ Sidebar — zawsze ciemny, niezależnie od motywu ══ */
+
 .sidebar {
   position: fixed;
-  left: 0;
-  top: 0;
-  width: 64px;
+  left: 0; top: 0;
+  width: 60px;
   height: 100vh;
   background: var(--sidebar-bg);
-  color: white;
-  transition: width 0.2s ease;
+  border-right: 1px solid rgba(255,255,255,0.06);
   display: flex;
   flex-direction: column;
   z-index: 100;
   overflow: hidden;
+  transition: width 0.22s cubic-bezier(0.4,0,0.2,1);
 }
+.sidebar.expanded { width: 224px; }
 
-.sidebar.expanded {
-  width: 220px;
-}
-
+/* ── Hamburger ── */
 .hamburger {
-  height: 56px;
-  font-size: 20px;
+  height: 60px;
+  min-height: 60px;
+  font-size: 18px;
   background: none;
   border: none;
-  color: white;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.45);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  transition: color 0.15s;
+  padding: 0 18px;
 }
+.hamburger:hover { color: var(--primary-accent); }
 
+/* ── Nav links ── */
 .nav-links {
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding: 8px 0;
+  overflow: hidden;
 }
 
 a {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 20px;
-  color: inherit;
+  padding: 11px 18px;
+  color: var(--nav-text);
   text-decoration: none;
   white-space: nowrap;
-  transition: background 0.15s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  &.active {
-    background: rgba(255, 255, 255, 0.15);
-  }
+  border-left: 3px solid transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+a:hover {
+  background: var(--nav-hover-bg);
+  color: var(--nav-text-hover);
+  border-left-color: rgba(249,115,22,0.35);
+}
+a.active {
+  background: var(--nav-active-bg);
+  color: var(--primary-accent);
+  border-left-color: var(--primary-accent);
 }
 
 .icon {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
-  width: 24px;
+  width: 22px;
   text-align: center;
 }
-
 .label {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
 }
 
-/* Search button */
+/* ── Dolna sekcja ── */
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
 
-.search-btn {
+/* Wspólna baza przycisków dolnych */
+.search-btn,
+.theme-btn,
+.logout-btn {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 20px;
+  padding: 12px 18px;
   background: none;
   border: none;
-  color: white;
+  color: rgba(255,255,255,0.45);
   cursor: pointer;
   white-space: nowrap;
   width: 100%;
   text-align: left;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
-  transition: background 0.15s ease;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  margin-top: auto;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s;
 }
 
 .search-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--nav-search-hover-bg);
+  color: var(--primary-accent);
 }
 
-.search-icon {
-  font-size: 1.2rem;
+/* Przełącznik motywu */
+.theme-btn:hover {
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.85);
+}
+
+/* Wyloguj */
+.logout-btn {
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.logout-btn:hover {
+  background: var(--nav-logout-hover-bg);
+  color: var(--nav-logout-hover-clr);
+}
+
+.search-icon,
+.theme-icon,
+.logout-icon {
+  font-size: 1.1rem;
   flex-shrink: 0;
-  width: 24px;
+  width: 22px;
   text-align: center;
 }

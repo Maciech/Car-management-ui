@@ -1,78 +1,124 @@
-@if (currentStep() === RegisterStep.Credentials) {
-  <div [formGroup]="credentialsGroup">
+<section class="register-page">
+  <div class="register-card app-card">
 
-    <input formControlName="email" placeholder="Email" />
+    <!-- Brand -->
+    <div class="register-brand">
+      <div class="brand-logo">🚗</div>
+      <h1>AutoFleet</h1>
+      <p>Utwórz konto</p>
+    </div>
 
-    @if (emailControl?.touched && emailControl?.errors?.['required']) {
-      <p class="error">Email jest wymagany</p>
+    <!-- Step indicator -->
+    <div class="step-indicator">
+      <span class="step-label">{{ stepLabel() }}</span>
+      <div class="step-dots">
+        <span class="dot" [class.active]="currentStep() === RegisterStep.Credentials"></span>
+        <span class="dot" [class.active]="currentStep() === RegisterStep.Purpose"></span>
+        <span class="dot" [class.active]="currentStep() === RegisterStep.OptionalInfo"></span>
+      </div>
+    </div>
+
+    <!-- ── Step 1: Credentials ── -->
+    @if (currentStep() === RegisterStep.Credentials) {
+      <div class="form-body" [formGroup]="credentialsGroup">
+
+        <div class="field">
+          <label>Adres e-mail</label>
+          <input type="email" formControlName="email" placeholder="email@przykład.pl" autocomplete="email" />
+          @if (emailControl?.touched && emailControl?.errors?.['required']) {
+            <span class="field-error">E-mail jest wymagany</span>
+          }
+          @if (emailControl?.touched && emailControl?.errors?.['email']) {
+            <span class="field-error">Niepoprawny format adresu e-mail</span>
+          }
+        </div>
+
+        <div class="field">
+          <label>Hasło <span class="hint">(min. 6 znaków)</span></label>
+          <input type="password" formControlName="password" placeholder="Hasło" autocomplete="new-password" />
+          @if (passwordControl?.touched && passwordControl?.errors?.['required']) {
+            <span class="field-error">Hasło jest wymagane</span>
+          }
+          @if (passwordControl?.touched && passwordControl?.errors?.['minlength']) {
+            <span class="field-error">Hasło musi mieć minimum 6 znaków</span>
+          }
+        </div>
+
+        <div class="field">
+          <label>Potwierdź hasło</label>
+          <input type="password" formControlName="confirmPassword" placeholder="Powtórz hasło" autocomplete="new-password" />
+          @if (confirmPasswordControl?.touched && credentialsGroup.errors?.['passwordMismatch']) {
+            <span class="field-error">Hasła nie są takie same</span>
+          }
+        </div>
+
+      </div>
     }
 
-    @if (emailControl?.touched && emailControl?.errors?.['email']) {
-      <p class="error">Niepoprawny format email</p>
+    <!-- ── Step 2: Purpose ── -->
+    @if (currentStep() === RegisterStep.Purpose) {
+      <div class="form-body" [formGroup]="registerForm">
+
+        <p class="step-desc">Do jakich celów chcesz używać konta?</p>
+
+        <label class="radio-option">
+          <input type="radio" value="USER" formControlName="role" />
+          <span class="radio-content">
+            <strong>Sprzedaż lub zakup</strong>
+            <small>Zarządzam pojedynczymi pojazdami</small>
+          </span>
+        </label>
+
+        <label class="radio-option">
+          <input type="radio" value="BUSINESS" formControlName="role" />
+          <span class="radio-content">
+            <strong>Sprzedaż masowa</strong>
+            <small>Prowadzę działalność dealerską</small>
+          </span>
+        </label>
+
+      </div>
     }
 
-    <input type="password"
-           formControlName="password"
-           placeholder="Hasło" />
+    <!-- ── Step 3: Optional ── -->
+    @if (currentStep() === RegisterStep.OptionalInfo) {
+      <div class="form-body" [formGroup]="optionalGroup">
 
-    @if (passwordControl?.touched && passwordControl?.errors?.['required']) {
-      <p class="error">Hasło jest wymagane</p>
+        <p class="step-desc">Dane opcjonalne — możesz pominąć.</p>
+
+        <div class="field">
+          <label>Telefon</label>
+          <input type="tel" formControlName="phone" placeholder="+48 123 456 789" />
+        </div>
+
+        <div class="field">
+          <label>Adres</label>
+          <input type="text" formControlName="address" placeholder="Miasto, ulica..." />
+        </div>
+
+      </div>
     }
 
-    @if (passwordControl?.touched && passwordControl?.errors?.['minlength']) {
-      <p class="error">
-        Hasło musi mieć minimum 6 znaków
-      </p>
+    <!-- ── Error ── -->
+    @if (error) {
+      <div class="register-error">{{ error }}</div>
     }
 
-    <input type="password"
-           formControlName="confirmPassword"
-           placeholder="Potwierdź hasło" />
+    <!-- ── Navigation buttons ── -->
+    <div class="nav-buttons">
+      @if (currentStep() !== RegisterStep.Credentials) {
+        <button class="btn-back" (click)="back()">← Wstecz</button>
+      }
+      <button class="btn-next" (click)="next()">
+        {{ currentStep() === RegisterStep.OptionalInfo ? '✓ Zarejestruj się' : 'Dalej →' }}
+      </button>
+    </div>
 
-    @if (confirmPasswordControl?.touched && credentialsGroup.errors?.['passwordMismatch']) {
-      <p class="error">Hasła nie są takie same</p>
-    }
+    <!-- ── Link to login ── -->
+    <p class="switch-link">
+      Masz już konto?
+      <a routerLink="/login">Zaloguj się</a>
+    </p>
 
   </div>
-}
-
-@if (currentStep() === RegisterStep.Purpose) {
-  <div [formGroup]="registerForm">
-
-  <h3>Do jakich celów chcesz używać konta?</h3>
-
-  <label>
-    <input type="radio" value="RETAIL" formControlName="role" />
-    Sprzedaż lub zakup
-  </label>
-
-  <label>
-    <input type="radio" value="BUSINESS" formControlName="role" />
-    Sprzedaż masowa
-  </label>
-
-</div>
-}
-
-@if (currentStep() === RegisterStep.OptionalInfo) {
-  <div [formGroup]="optionalGroup">
-
-    <h3>Dane opcjonalne</h3>
-
-    <input formControlName="phone" placeholder="Telefon" />
-    <input formControlName="address" placeholder="Adres" />
-
-  </div>
-}
-
-<div class="nav-buttons">
-
-  @if (currentStep() !== RegisterStep.Credentials) {
-    <button (click)="back()">Wstecz</button>
-  }
-
-  <button (click)="next()">
-    {{ currentStep() === RegisterStep.OptionalInfo ? 'Zarejestruj' : 'Dalej' }}
-  </button>
-
-</div>
+</section>

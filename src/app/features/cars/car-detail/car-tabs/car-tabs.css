@@ -1,35 +1,38 @@
+/* ══ Car Tabs ══ */
+
 .tabs-header {
   display: flex;
-  gap: 8px;
-  padding: 6px;
-  background: var(--card-bg-soft);
-  border-radius: 10px;
+  gap: 4px;
+  padding: 5px;
+  background: var(--card-bg-darker);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
 }
 
 .tab-btn {
   flex: 1;
-  padding: 10px 0;
-
+  padding: 9px 0;
   border: none;
-  border-radius: 8px;
-
+  border-radius: 6px;
   background: transparent;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-
+  font-family: inherit;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.2s, color 0.2s;
 }
 
 .tab-btn:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255,255,255,0.05);
+  color: var(--text-main);
 }
 
 .tab-btn.active {
-  background: var(--sidebar-bg);
+  background: var(--primary-accent);
   color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(249,115,22,0.35);
 }
 
 .tabs-content {

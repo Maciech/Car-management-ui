@@ -5,46 +5,50 @@
   </header>
 
   @if (loading()) {
-    <div class="kpis">
-      <div class="kpi"><span>Ładowanie...</span></div>
+    <div class="stats-body">
+      <div class="kpis">
+        <div class="kpi"><span>Ładowanie...</span></div>
+      </div>
     </div>
   } @else if (stats(); as s) {
-    <div class="counters">
-      <div class="counter">
-        <span>{{ s.activeCars }}</span>
-        <label>aktywnych aut</label>
-      </div>
-      <div class="counter">
-        <span>{{ s.soldCars }}</span>
-        <label>sprzedanych</label>
-      </div>
-      <div class="counter">
-        <span>{{ s.totalCars }}</span>
-        <label>łącznie</label>
-      </div>
-    </div>
-
-    <div class="kpis">
-      <div class="kpi">
-        <span>Zainwestowane (aktywne)</span>
-        <strong>{{ s.totalInvestedInActive | currency:'PLN':'symbol':'1.0-0':'pl' }}</strong>
+    <div class="stats-body">
+      <div class="counters">
+        <div class="counter">
+          <span>{{ s.activeCars }}</span>
+          <label>aktywnych aut</label>
+        </div>
+        <div class="counter">
+          <span>{{ s.soldCars }}</span>
+          <label>sprzedanych</label>
+        </div>
+        <div class="counter">
+          <span>{{ s.totalCars }}</span>
+          <label>łącznie</label>
+        </div>
       </div>
 
-      <div class="kpi">
-        <span>Przychód ze sprzedaży</span>
-        <strong>{{ s.soldRevenue | currency:'PLN':'symbol':'1.0-0':'pl' }}</strong>
-      </div>
-
-      <div class="kpi">
-        <span>Zysk netto</span>
-        <strong [class]="profitClass">
-          {{ s.totalProfit | currency:'PLN':'symbol':'1.0-0':'pl' }}
-        </strong>
+      <div class="kpis">
+        <div class="kpi">
+          <span>Zainwestowane (aktywne)</span>
+          <strong>{{ s.totalInvestedInActive | currency:'PLN':'symbol':'1.0-0':'pl' }}</strong>
+        </div>
+        <div class="kpi">
+          <span>Przychód ze sprzedaży</span>
+          <strong>{{ s.soldRevenue | currency:'PLN':'symbol':'1.0-0':'pl' }}</strong>
+        </div>
+        <div class="kpi">
+          <span>Zysk netto</span>
+          <strong [class]="profitClass()">
+            {{ s.totalProfit | currency:'PLN':'symbol':'1.0-0':'pl' }}
+          </strong>
+        </div>
       </div>
     </div>
   } @else {
-    <div class="kpis">
-      <div class="kpi"><span>Brak danych</span></div>
+    <div class="stats-body">
+      <div class="kpis">
+        <div class="kpi"><span>Brak danych</span></div>
+      </div>
     </div>
   }
 

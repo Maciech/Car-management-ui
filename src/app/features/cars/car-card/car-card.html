@@ -24,20 +24,20 @@
   </div>
 
   <div class="card-body">
-    <strong class="car-name">{{ car.brand }} {{ car.model }}</strong>
+    <strong class="car-name">{{ car.brand }} {{ car.generation ? car.generation + ' ' : '' }}{{ car.model }}</strong>
 
     <div class="info">
       <div class="info-row">
-        <span>Rok</span>
+        <span>Rok produkcji</span>
         <strong>{{ car.productionYear }}</strong>
       </div>
       <div class="info-row">
-        <span>Zakup</span>
+        <span>Cena zakupu</span>
         <strong>{{ car.purchasePrice | number:'1.0-0' }} zł</strong>
       </div>
       @if (car.salePrice) {
-        <div class="info-row">
-          <span>Sprzedaż</span>
+        <div class="info-row price-sale">
+          <span>Cena sprzedaży</span>
           <strong>{{ car.salePrice | number:'1.0-0' }} zł</strong>
         </div>
       }

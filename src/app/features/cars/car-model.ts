@@ -1,18 +1,29 @@
 import {CarStatus} from '../../shared/ui/enums/car-status.enum';
+import {CarColor} from '../../shared/ui/enums/car-color.enum';
 
 export interface Car {
   carId: number | null;
+
   brand: string;
   model: string;
   generation?: string;
+
+  carColor: CarColor;
   productionYear: number;
+  vinNumber: string;
   mileage: number;
   kwPower: number;
-  purchasePrice: number;
+  engineCapacity: number;
+
+  isImported?: boolean;
+  isDamaged: boolean;
+  numberOfPreviousOwners: number;
+  description: string;
+
+  purchasePrice?: number;
   salePrice?: number;
   isSold: boolean;
-  isImported: boolean;
-  isDamaged: boolean;
+
   status?: CarStatus;
   images: string[];
 }
