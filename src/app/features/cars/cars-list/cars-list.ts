@@ -56,7 +56,10 @@ export class CarsList implements OnInit {
   ngOnInit() {
     const status = this.route.snapshot.queryParamMap.get('status') as FilterKey | null;
     if (status) this.activeFilter.set(status);
+    this.load();
+  }
 
+  load() {
     this.carService.getAll().subscribe({
       next: cars => this.allCars.set(cars),
     });

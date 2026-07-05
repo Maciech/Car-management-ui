@@ -55,7 +55,7 @@ export class Marketplace implements OnInit {
   private load(criteria: SearchCriteria) {
     this.loading.set(true);
     this.searchService.search(criteria).subscribe({
-      next: cars => { this.results.set(cars); this.loading.set(false); },
+      next: cars => { this.results.set(cars.filter(c => c.status === 'WYSTAWIONE')); this.loading.set(false); },
       error: ()  => { this.results.set([]); this.loading.set(false); },
     });
   }

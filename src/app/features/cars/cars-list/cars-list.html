@@ -26,7 +26,7 @@
   } @else {
     <div class="grid">
       @for (car of filteredCars(); track car.carId) {
-        <app-car-card [car]="car" />
+        <app-car-card [car]="car" (changed)="load()" />
       }
     </div>
   }

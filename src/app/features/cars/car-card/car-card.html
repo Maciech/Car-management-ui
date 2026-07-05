@@ -19,7 +19,9 @@
       </div>
     }
 
-    <span class="status-badge image-badge" [class]="statusCss">{{ statusLabel }}</span>
+    @if (!hideStatus) {
+      <span class="status-badge image-badge" [class]="statusCss">{{ statusLabel }}</span>
+    }
 
     <!-- ── Actions button (only when showActions=true) ── -->
     @if (showActions) {
@@ -68,8 +70,10 @@
         {{ opt.label }}
       </button>
     }
-    <hr class="actions-sep" />
-    <button class="action-item danger" (click)="requestDelete($event)">🗑️ Usuń samochód</button>
+    @if (car.isOwner) {
+      <hr class="actions-sep" />
+      <button class="action-item danger" (click)="requestDelete($event)">🗑️ Usuń samochód</button>
+    }
   </div>
 }
 

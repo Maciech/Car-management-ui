@@ -1,0 +1,47 @@
+<!-- Formularz nowego zaproszenia -->
+<div class="inv-form">
+  <input
+    type="email"
+    class="inv-email-input"
+    placeholder="Adres e-mail"
+    [(ngModel)]="newEmail"
+    (keydown.enter)="invite()"
+  />
+  <button class="inv-send-btn" [disabled]="inviting() || !newEmail.trim()" (click)="invite()">
+    {{ inviting() ? 'Wysyłanie...' : 'Zaproś' }}
+  </button>
+</div>
+
+@if (inviteSent()) {
+  <p class="inv-feedback ok">Zaproszenie zostało wysłane.</p>
+}
+@if (inviteError()) {
+  <p class="inv-feedback err">{{ inviteError() }}</p>
+}
+
+<!-- Lista wysłanych zaproszeń -->
+@if (invitations().length > 0) {
+  <ul class="inv-list">
+    @for (inv of invitations(); track inv.invitationId) {
+      <li class="inv-item">
+        <div class="inv-info">
+          <span class="inv-email">{{ inv.inviteeEmail }}</span>
+          <span class="inv-status" [class]="'status-' + inv.status.toLowerCase()">
+            {{ statusLabel(inv.status) }}
+          </span>
+        </div>
+
+        @if (sent() === inv.invitationId) {
+          <span class="inv-sent-ok">Wysłano ✓</span>
+        } @else {
+          <button
+            class="inv-resend"
+            [disabled]="sending() === inv.invitationId"
+            (click)="resend(inv)">
+            {{ sending() === inv.invitationId ? 'Wysyłanie...' : 'Wyślij ponownie' }}
+          </button>
+        }
+      </li>
+    }
+  </ul>
+}

@@ -8,7 +8,7 @@
 
     <app-car-gallery [carId]="car()?.carId!" (changed)="load()" />
 
-    <app-car-tabs [carId]="car()!.carId!" />
+    <app-car-tabs [carId]="car()!.carId!" [carName]="car()!.brand + ' ' + car()!.model" />
 
   </section>
 

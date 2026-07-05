@@ -23,7 +23,8 @@ export class CarCard implements OnInit {
   private toast        = inject(ToastService);
 
   @Input({required: true}) car!: Car;
-  @Input() showActions = false;
+  @Input() showActions = true;
+  @Input() hideStatus  = false;
   @Output() changed    = new EventEmitter<void>();
 
   images       = signal<ImageModel[]>([]);

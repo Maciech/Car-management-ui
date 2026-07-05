@@ -21,6 +21,13 @@
       (click)="view.set('history')">
       Historia
     </button>
+
+    <button
+      class="tab-btn"
+      [class.active]="view() === 'invitations'"
+      (click)="view.set('invitations')">
+      Zaproszenia
+    </button>
   </div>
 
   <div class="tabs-content">
@@ -30,6 +37,9 @@
       }
       @case ('profit') {
         <app-profit-tab [carId]="carId!" />
+      }
+      @case ('invitations') {
+        <app-invitations-tab [carId]="carId!" [carName]="carName" />
       }
     }
   </div>

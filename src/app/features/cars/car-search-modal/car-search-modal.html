@@ -158,7 +158,7 @@
           </div>
           <div class="results-grid">
             @for (car of cars; track car.carId) {
-              <app-car-card [car]="car" />
+              <app-car-card [car]="car" [showActions]="false" />
             }
           </div>
         }

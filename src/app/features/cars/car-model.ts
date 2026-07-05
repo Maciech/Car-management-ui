@@ -27,4 +27,5 @@ export interface Car {
   status?: CarStatus;
   images: string[];
   totalExpenses?: number;
+  isOwner?: boolean;
 }

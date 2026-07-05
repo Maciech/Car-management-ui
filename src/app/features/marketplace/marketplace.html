@@ -177,7 +177,7 @@
       } @else {
         <div class="results-grid">
           @for (car of results(); track car.carId) {
-            <app-car-card [car]="car" />
+            <app-car-card [car]="car" [showActions]="false" [hideStatus]="true" />
           }
         </div>
       }
